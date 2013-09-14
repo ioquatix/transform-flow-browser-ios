@@ -1,6 +1,19 @@
-# ARBrowser
+# Transform Flow Browser (iOS)
 
-ARBrowser is a basic framework for outdoor augmented reality. It depends on motion models defined in Transform Flow.
+The Transform Flow Browser for iOS is an outdoor augmented reality platform based on the Transform Flow motion models. It provides an example set of primitives rendered using OpenGLES.
+
+## Building Dependencies
+
+The iOS browser requires the transform flow library and the various motion models it provides. To build this, you need teapot, which is a RubyGem.
+
+	$ sudo gem install teapot
+
+Once you've got teapot, you can build the dependencies:
+
+	$ teapot fetch
+	$ teapot build Dependencies/TranformFlowBrowserIOS platform-darwin-ios variant-debug
+
+Once you've done this, the Xcode project file should compile and run.
 
 ## Contributing
 
