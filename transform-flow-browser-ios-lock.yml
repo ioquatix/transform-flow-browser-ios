@@ -1,0 +1,43 @@
+---
+platforms:
+  :branch: master
+  :commit: aa9c88fb5e53453becab163c26bb1db7270ae170
+euclid:
+  :branch: master
+  :commit: bfbb6661efe125554c489f28c26c8ddb1475f686
+opencv:
+  :branch: master
+  :commit: 3d1c26836ee119e6f7f214b8ec8a0408a41bb7ed
+transform-flow:
+  :branch: master
+  :commit: 40745a4a722f0c32201fb8a0f10c5235cd206b24
+variants:
+  :branch: master
+  :commit: 6f3c1de3c0a6254e1fed58fc68fd8a96218f28e7
+platform-darwin-osx:
+  :branch: master
+  :commit: 80877bc9897bf93ae7b6f1608ca96bd32fc1b74e
+platform-darwin-ios:
+  :branch: master
+  :commit: 835a41bbccf16564effba602d7085afb22ecaf88
+png:
+  :branch: master
+  :commit: fbb8e7e1e8d68de4d6b533f3941af7739f8939a2
+jpeg:
+  :branch: master
+  :commit: 30e2b40cd316e49d115425c92c82029a7806dd2b
+dream:
+  :branch: master
+  :commit: 0d67847d485101f753e9e69dd380a7493ccaa96d
+dream-imaging:
+  :branch: master
+  :commit: 5fae4fe69f4596a375e4f2f312f4eeed7250ea9f
+utf8:
+  :branch: master
+  :commit: 299d10bd57a4deda3e7f8ea0744d1be258b51d2b
+unit-test:
+  :branch: master
+  :commit: 90d9132fc11641d3cdef1e642325b75b2b48ab3a
+project:
+  :branch: master
+  :commit: e946a70ebb2ab9059126262810fc52734661669a

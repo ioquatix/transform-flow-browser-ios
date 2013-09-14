@@ -34,6 +34,8 @@
 		7E61C97C1354B44B00857A4D /* ARWorldPoint.mm in Sources */ = {isa = PBXBuildFile; fileRef = 7E61C97B1354B44B00857A4D /* ARWorldPoint.mm */; };
 		7E61C97F1354B4E100857A4D /* ARModel.mm in Sources */ = {isa = PBXBuildFile; fileRef = 7E61C97E1354B4E000857A4D /* ARModel.mm */; };
 		7E61C98B1354B69C00857A4D /* models in Resources */ = {isa = PBXBuildFile; fileRef = 7E61C98A1354B69C00857A4D /* models */; };
+		7E7C050117E42E300087836F /* teapot.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 7E7C04FF17E42E300087836F /* teapot.xcconfig */; };
+		7E7C050217E42E300087836F /* transform-flow-browser-ios.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 7E7C050017E42E300087836F /* transform-flow-browser-ios.xcconfig */; };
 		7E8D4CB1134FE04A00868D6B /* ARBrowserView.mm in Sources */ = {isa = PBXBuildFile; fileRef = 7E8D4CB0134FE04A00868D6B /* ARBrowserView.mm */; };
 		7EBB6E2A13C5465A0028A3E7 /* ARMainWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7EBB6E2813C5465A0028A3E7 /* ARMainWindow.xib */; };
 		7EBB6E2F13C550650028A3E7 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7EBB6E2E13C550650028A3E7 /* MapKit.framework */; };
@@ -111,6 +113,8 @@
 		7E61C97D1354B4E000857A4D /* ARModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARModel.h; sourceTree = "<group>"; };
 		7E61C97E1354B4E000857A4D /* ARModel.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ARModel.mm; sourceTree = "<group>"; };
 		7E61C98A1354B69C00857A4D /* models */ = {isa = PBXFileReference; lastKnownFileType = folder; path = models; sourceTree = "<group>"; };
+		7E7C04FF17E42E300087836F /* teapot.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; name = teapot.xcconfig; path = teapot/teapot.xcconfig; sourceTree = "<group>"; };
+		7E7C050017E42E300087836F /* transform-flow-browser-ios.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; name = "transform-flow-browser-ios.xcconfig"; path = "teapot/transform-flow-browser-ios.xcconfig"; sourceTree = "<group>"; };
 		7E8D4CAF134FE04A00868D6B /* ARBrowserView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARBrowserView.h; sourceTree = "<group>"; };
 		7E8D4CB0134FE04A00868D6B /* ARBrowserView.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ARBrowserView.mm; sourceTree = "<group>"; };
 		7EBB6E2913C5465A0028A3E7 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/ARMainWindow.xib; sourceTree = "<group>"; };
@@ -195,6 +199,8 @@
 		7E2336B8134AD1FF00BEFB33 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				7E7C04FF17E42E300087836F /* teapot.xcconfig */,
+				7E7C050017E42E300087836F /* transform-flow-browser-ios.xcconfig */,
 				7EFF636B17DFFCD700440536 /* GLKit.framework */,
 				7E3CF614153EAD4300027867 /* AudioToolbox.framework */,
 				7EBE522A14D60FC80054B478 /* ImageIO.framework */,
@@ -427,6 +433,8 @@
 				7EFF638917E017B900440536 /* BrowserIcon.png in Resources */,
 				7EFF638A17E017B900440536 /* MapIcon.png in Resources */,
 				7EFF638C17E01F2600440536 /* Default-568h@2x.png in Resources */,
+				7E7C050117E42E300087836F /* teapot.xcconfig in Resources */,
+				7E7C050217E42E300087836F /* transform-flow-browser-ios.xcconfig in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -494,6 +502,7 @@
 /* Begin XCBuildConfiguration section */
 		7E2336D4134AD1FF00BEFB33 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 7E7C050017E42E300087836F /* transform-flow-browser-ios.xcconfig */;
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
 				CLANG_ENABLE_OBJC_ARC = YES;
@@ -551,6 +560,7 @@
 		};
 		7E2336D8134AD1FF00BEFB33 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 7E7C050017E42E300087836F /* transform-flow-browser-ios.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				COPY_PHASE_STRIP = YES;
