@@ -7,7 +7,6 @@
 //
 
 #import "ARViewModel.h"
-#import "ARLocationController.h"
 
 #import <QuartzCore/CALayer.h>
 #import <OpenGLES/ES1/gl.h>
@@ -109,8 +108,11 @@
 	Mat44 m;
 	glGetFloatv(GL_MODELVIEW_MATRIX, m.f);
 
-	CMAcceleration gravity = [[ARLocationController sharedInstance] currentGravity];		
-	Vec3 f(gravity.x, gravity.y, gravity.z);
+	// Location Controller code:
+	//CMAcceleration gravity = [[ARLocationController sharedInstance] currentGravity];
+	//Vec3 f(gravity.x, gravity.y, gravity.z);
+
+	Vec3 f(0, -1, 0);
 	f.normalize();
 	
 	//NSLog(@"f: %0.3f, %0.3f, %0.3f", f.x, f.y, f.z);

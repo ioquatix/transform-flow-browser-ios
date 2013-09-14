@@ -7,7 +7,9 @@
 //
 
 #import "ARBrowserView.h"
-#import "ARLocationController.h"
+
+#import "ARMotionModelController.h"
+#include <TransformFlow/BasicSensorMotionModel.h>
 
 #import "ARRendering.h"
 #import "ARWorldPoint.h"
@@ -37,29 +39,18 @@ static Vec2 positionInView (UIView * view, UITouch * touch)
 	
 	/// @internal
 	struct ARBrowserViewState * state;
-	
-	float minimumDistance, maximumDistance;
-	
-	/// Objects closer than near distance will be scaled down in size,
-	/// and vise versa for far distance.
-	float nearDistance, farDistance;
-	
-	BOOL displayRadar, displayGrid;
-	
-	/// The center of the radar on the screen.
-	CGPoint radarCenter;
 
 	Mat44 _projectionMatrix, _viewMatrix;
 	
 	ARBrowser::VerticesT _grid;
 }
+
+/// The location controller to use for position information.
+@property(nonatomic,retain) ARMotionModelController * motionModelController;
+
 @end
 
 @implementation ARBrowserView
-
-@synthesize delegate, minimumDistance, maximumDistance, displayRadar, displayGrid, radarCenter;
-@synthesize nearDistance, farDistance;
-@synthesize locationController = _locationController;
 
 - (id)initWithFrame:(CGRect)frame
 {
@@ -71,20 +62,21 @@ static Vec2 positionInView (UIView * view, UITouch * touch)
 		[videoFrameController start];
 		
 		// Initialise the location controller
-		self.locationController = [ARLocationController sharedInstance];
+		self.motionModelController = [ARMotionModelController new];
+		self.motionModelController.motionModel = new TransformFlow::BasicSensorMotionModel;
 		
 		ARBrowser::generateGrid(_grid);
 		
-		minimumDistance = 2.0;
-		nearDistance = minimumDistance * 2.0;
+		_minimumDistance = 2.0;
+		_nearDistance = _minimumDistance * 2.0;
 		
-		maximumDistance = 500.0;
-		farDistance = maximumDistance / 2.0;
+		_maximumDistance = 500.0;
+		_farDistance = _maximumDistance / 2.0;
 		
-		displayRadar = YES;
+		_displayRadar = YES;
 		
-		radarCenter.x = -1;
-		radarCenter.y = -1;
+		_radarCenter.x = -1;
+		_radarCenter.y = -1;
 	}
 	
 	return self;
@@ -99,7 +91,7 @@ static Vec2 positionInView (UIView * view, UITouch * touch)
 
 		ARBrowser::Ray ray = ARBrowser::calculateRayFromScreenCoordinates(_projectionMatrix, _viewMatrix, viewport, positionInView(self, touch));
 		
-		ARWorldLocation * origin = [self.locationController worldLocation];
+		ARWorldLocation * origin = [self.motionModelController worldLocation];
 		NSArray * worldPoints = [[self delegate] worldPoints];
 
 		ARWorldPoint * closestWorldPoint = nil;
@@ -113,7 +105,7 @@ static Vec2 positionInView (UIView * view, UITouch * touch)
 			float distance = offset.length();
 			
 			// Cull the object if it is outside the view bounds.
-			if (distance < minimumDistance || distance > maximumDistance) {
+			if (distance < _minimumDistance || distance > _maximumDistance) {
 				continue;
 			}
 
@@ -126,7 +118,7 @@ static Vec2 positionInView (UIView * view, UITouch * touch)
 			//ARBrowser::BoundingSphere sphere(box.center(), box.radius());
 
 			// Box ray-slab intersection requires a line segment, not just a line.
-			if (box.intersectsWith(ray.origin, ray.direction * maximumDistance, t1, t2)) {
+			if (box.intersectsWith(ray.origin, ray.direction * _maximumDistance, t1, t2)) {
 				if (t1 < closestIntersection) {
 					closestIntersection = t1;
 					closestWorldPoint = worldPoint;
@@ -141,8 +133,8 @@ static Vec2 positionInView (UIView * view, UITouch * touch)
 }
 
 - (void) drawRadar {
-	ARWorldLocation * origin = [self.locationController worldLocation];
-	CMAcceleration gravity = [self.locationController currentGravity];
+	ARWorldLocation * origin = [self.motionModelController worldLocation];
+	CMAcceleration gravity = [self.motionModelController currentGravity];
 	//NSLog(@"Bearing: %0.3f", origin.rotation);
 	
 	NSArray * worldPoints = nil;
@@ -170,7 +162,7 @@ static Vec2 positionInView (UIView * view, UITouch * touch)
 				// Normalize the distance of the point
 				//const float LF = 10.0;
 				//float length = log10f((delta.length() / LF) + 1) * LF;
-				float length = sqrt(delta.length() / maximumDistance);
+				float length = sqrt(delta.length() / _maximumDistance);
 				
 				// Normalize the vector so we can scale its length appropriately.
 				delta.normalize();
@@ -296,7 +288,7 @@ static Vec2 positionInView (UIView * view, UITouch * touch)
 	glEnable(GL_DEPTH_TEST);
 	glClear(GL_DEPTH_BUFFER_BIT);
 	
-	CMAcceleration gravity = [self.locationController currentGravity];
+	CMAcceleration gravity = [self.motionModelController currentGravity];
 	
 	// Calculate the camera paremeters
 	{
@@ -347,7 +339,7 @@ static Vec2 positionInView (UIView * view, UITouch * touch)
 	glMultMatrixf(perspectiveProjection.f);
 	
 	glMatrixMode(GL_MODELVIEW);
-	ARWorldLocation * origin = [self.locationController worldLocation];
+	ARWorldLocation * origin = [self.motionModelController worldLocation];
 	
 	glRotatef([origin rotation], 0, 0, 1);
 	
@@ -357,21 +349,21 @@ static Vec2 positionInView (UIView * view, UITouch * touch)
 	glColor4f(0.7, 0.7, 0.7, 0.2);
 	glLineWidth(2.0);
 	
-	if (displayGrid) {
+	if (_displayGrid) {
 		ARBrowser::renderVertices(_grid);
 		ARBrowser::renderAxis();
 	}
 	
 	if (true) {
 		glColor4f(1.0, 0.0, 0.0, 1.0);
-		ARBrowser::renderRing(maximumDistance);		
-		ARBrowser::renderRing(minimumDistance);
+		ARBrowser::renderRing(_maximumDistance);
+		ARBrowser::renderRing(_minimumDistance);
 		
 		glColor4f(0.0, 0.0, 1.0, 1.0);
-		ARBrowser::renderRing(nearDistance);
+		ARBrowser::renderRing(_nearDistance);
 		
 		glColor4f(0.0, 1.0, 0.0, 1.0);
-		ARBrowser::renderRing(farDistance);
+		ARBrowser::renderRing(_farDistance);
 		
 		glColor4f(1.0, 1.0, 1.0, 1.0);
 	}
@@ -407,7 +399,7 @@ static Vec2 positionInView (UIView * view, UITouch * touch)
 		// Calculate actual (non-scaled) distance.
 		float distance = birdFlys.length();
 		
-		if (distance < minimumDistance || distance > maximumDistance) {
+		if (distance < _minimumDistance || distance > _maximumDistance) {
 			continue;
 		}
 		
@@ -438,7 +430,7 @@ static Vec2 positionInView (UIView * view, UITouch * touch)
 		glPopMatrix();
 	}
 	
-	if (displayRadar)
+	if (_displayRadar)
 		[self drawRadar];
 	
 	[super update];
@@ -446,6 +438,8 @@ static Vec2 positionInView (UIView * view, UITouch * touch)
 
 - (void) stopRendering
 {
+	[self.motionModelController stopTracking];
+	
 	[videoFrameController stop];
 	
 	[super stopRendering];
@@ -453,13 +447,19 @@ static Vec2 positionInView (UIView * view, UITouch * touch)
 
 - (void) startRendering
 {
+	[self.motionModelController startTracking];
+
 	[videoFrameController start];
+	
+	[videoFrameController setDelegate:self.motionModelController];
 	
 	[super startRendering];
 }
 
 - (void)dealloc
 {
+	[self.motionModelController stopTracking];
+
 	[videoFrameController stop];	
 }
 

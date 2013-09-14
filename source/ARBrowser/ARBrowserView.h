@@ -60,7 +60,4 @@
 /// Display a background horizon grid.
 @property(assign) BOOL displayGrid;
 
-/// The location controller to use for position information.
-@property(nonatomic,retain) ARLocationController * locationController;
-
 @end
