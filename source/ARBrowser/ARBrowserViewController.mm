@@ -76,6 +76,10 @@
 	NSLog(@"Developer %@ at %@", developer, address);
 }
 
+- (void)didResizeSurfaceForView:(ARGLView *)view
+{
+}
+
 // Optional - supply either -worldPoints or this:
 //- (NSArray *)worldPointsFromLocation:(ARWorldLocation *)origin withinDistance:(float)distance {
 	// You can apply your own filtering or asynchronous fetching here.
