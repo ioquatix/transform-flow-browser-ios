@@ -1,7 +1,7 @@
 ---
 platforms:
   :branch: master
-  :commit: aa9c88fb5e53453becab163c26bb1db7270ae170
+  :commit: 517d7d998edad1e56106c2751cf9dfb686d79ea5
 euclid:
   :branch: master
   :commit: bfbb6661efe125554c489f28c26c8ddb1475f686
@@ -31,7 +31,7 @@ dream:
   :commit: 0d67847d485101f753e9e69dd380a7493ccaa96d
 dream-imaging:
   :branch: master
-  :commit: 5fae4fe69f4596a375e4f2f312f4eeed7250ea9f
+  :commit: 4401546bb057283b1524955f772e3f6da2935bc2
 utf8:
   :branch: master
   :commit: 299d10bd57a4deda3e7f8ea0744d1be258b51d2b
@@ -40,4 +40,4 @@ unit-test:
   :commit: 90d9132fc11641d3cdef1e642325b75b2b48ab3a
 project:
   :branch: master
-  :commit: e946a70ebb2ab9059126262810fc52734661669a
+  :commit: 78e618fa6f3b6fd717c92d7c7af8345c604bf0f7
