@@ -43,12 +43,6 @@
 	[self setView:browserView];
 }
 
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
-{
-    // Return YES for supported orientations
-    return (interfaceOrientation == UIInterfaceOrientationPortrait);
-}
-
 - (void)viewDidAppear:(BOOL)animated {
 	NSLog(@"ARBrowserViewController: Resuming Rendering.");
 		
@@ -91,6 +85,33 @@
 // This method may be deprecated in the future..
 - (void)renderInLocalCoordinatesForBrowserView:(ARBrowserView *)view {
 	
+}
+
+-(void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
+	[super willRotateToInterfaceOrientation:toInterfaceOrientation duration:duration];
+	
+	[UIView setAnimationsEnabled:NO];
+	[self adjustForOrientation:toInterfaceOrientation];
+	[UIView setAnimationsEnabled:YES];
+}
+
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
+    return TRUE;
+}
+
+// This code rotates the ARGLView in the opporsite direction so that the camera is always oriented correctly:
+-(void)adjustForOrientation:(UIInterfaceOrientation)orientation {
+	if (orientation == UIInterfaceOrientationLandscapeLeft) {
+		self.view.transform = CGAffineTransformMakeRotation(0.5 * M_PI);
+	} else if (orientation == UIInterfaceOrientationLandscapeRight) {
+		self.view.transform = CGAffineTransformMakeRotation(-0.5 * M_PI);
+	} else {
+		self.view.transform = CGAffineTransformIdentity;
+	}
+
+	CGSize frameSize = self.view.frame.size;
+	CGPoint center = CGPointMake(frameSize.width / 2.0, frameSize.height / 2.0);
+	self.view.center = center;
 }
 
 @end
