@@ -33,7 +33,7 @@
 		7E61C9791354ACE200857A4D /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7E61C9781354ACE200857A4D /* CoreLocation.framework */; };
 		7E61C97C1354B44B00857A4D /* ARWorldPoint.mm in Sources */ = {isa = PBXBuildFile; fileRef = 7E61C97B1354B44B00857A4D /* ARWorldPoint.mm */; };
 		7E61C97F1354B4E100857A4D /* ARModel.mm in Sources */ = {isa = PBXBuildFile; fileRef = 7E61C97E1354B4E000857A4D /* ARModel.mm */; };
-		7E61C98B1354B69C00857A4D /* Models in Resources */ = {isa = PBXBuildFile; fileRef = 7E61C98A1354B69C00857A4D /* Models */; };
+		7E61C98B1354B69C00857A4D /* models in Resources */ = {isa = PBXBuildFile; fileRef = 7E61C98A1354B69C00857A4D /* models */; };
 		7E8D4CB1134FE04A00868D6B /* ARBrowserView.mm in Sources */ = {isa = PBXBuildFile; fileRef = 7E8D4CB0134FE04A00868D6B /* ARBrowserView.mm */; };
 		7EBB6E2A13C5465A0028A3E7 /* ARMainWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7EBB6E2813C5465A0028A3E7 /* ARMainWindow.xib */; };
 		7EBB6E2F13C550650028A3E7 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7EBB6E2E13C550650028A3E7 /* MapKit.framework */; };
@@ -110,7 +110,7 @@
 		7E61C97B1354B44B00857A4D /* ARWorldPoint.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ARWorldPoint.mm; sourceTree = "<group>"; };
 		7E61C97D1354B4E000857A4D /* ARModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARModel.h; sourceTree = "<group>"; };
 		7E61C97E1354B4E000857A4D /* ARModel.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ARModel.mm; sourceTree = "<group>"; };
-		7E61C98A1354B69C00857A4D /* Models */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Models; sourceTree = SOURCE_ROOT; };
+		7E61C98A1354B69C00857A4D /* models */ = {isa = PBXFileReference; lastKnownFileType = folder; path = models; sourceTree = "<group>"; };
 		7E8D4CAF134FE04A00868D6B /* ARBrowserView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARBrowserView.h; sourceTree = "<group>"; };
 		7E8D4CB0134FE04A00868D6B /* ARBrowserView.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ARBrowserView.mm; sourceTree = "<group>"; };
 		7EBB6E2913C5465A0028A3E7 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/ARMainWindow.xib; sourceTree = "<group>"; };
@@ -246,13 +246,14 @@
 				7E233732134B3F6500BEFB33 /* Internal */,
 				7E2336C0134AD1FF00BEFB33 /* Supporting Files */,
 			);
-			path = ARBrowser;
+			name = ARBrowser;
+			path = source/ARBrowser;
 			sourceTree = "<group>";
 		};
 		7E2336C0134AD1FF00BEFB33 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
-				7E61C98A1354B69C00857A4D /* Models */,
+				7E61C98A1354B69C00857A4D /* models */,
 				7E2336C1134AD1FF00BEFB33 /* ARBrowser-Info.plist */,
 				7E2336C2134AD1FF00BEFB33 /* InfoPlist.strings */,
 				7E2336C5134AD1FF00BEFB33 /* ARBrowser-Prefix.pch */,
@@ -353,7 +354,7 @@
 				7EFF638B17E01F2500440536 /* Default-568h@2x.png */,
 			);
 			name = Images;
-			path = ../Images;
+			path = images;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -409,7 +410,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				7E2336C4134AD1FF00BEFB33 /* InfoPlist.strings in Resources */,
-				7E61C98B1354B69C00857A4D /* Models in Resources */,
+				7E61C98B1354B69C00857A4D /* models in Resources */,
 				7EBB6E4613C5C50D0028A3E7 /* ARMapViewController.xib in Resources */,
 				7EBB6E2A13C5465A0028A3E7 /* ARMainWindow.xib in Resources */,
 				7EFF637017E00C9600440536 /* Default@2x.png in Resources */,
@@ -535,12 +536,12 @@
 				);
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "ARBrowser/ARBrowser-Prefix.pch";
+				GCC_PREFIX_HEADER = "source/ARBrowser/ARBrowser-Prefix.pch";
 				GCC_THUMB_SUPPORT = NO;
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
-				INFOPLIST_FILE = "ARBrowser/ARBrowser-Info.plist";
+				INFOPLIST_FILE = "$(SRCROOT)/source/ARBrowser/ARBrowser-Info.plist";
 				INSTALL_PATH = "$(LOCAL_APPS_DIR)";
-				IPHONEOS_DEPLOYMENT_TARGET = 6.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				OTHER_CFLAGS = "-marm";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -558,12 +559,12 @@
 					"\"$(SRCROOT)\"",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "ARBrowser/ARBrowser-Prefix.pch";
+				GCC_PREFIX_HEADER = "source/ARBrowser/ARBrowser-Prefix.pch";
 				GCC_THUMB_SUPPORT = NO;
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
-				INFOPLIST_FILE = "ARBrowser/ARBrowser-Info.plist";
+				INFOPLIST_FILE = "$(SRCROOT)/source/ARBrowser/ARBrowser-Info.plist";
 				INSTALL_PATH = "$(LOCAL_APPS_DIR)";
-				IPHONEOS_DEPLOYMENT_TARGET = 6.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				OTHER_CFLAGS = (
 					"-DNS_BLOCK_ASSERTIONS=1",
 					"-marm",
