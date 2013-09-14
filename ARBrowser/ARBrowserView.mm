@@ -287,9 +287,8 @@ static Vec2 positionInView (UIView * view, UITouch * touch)
 		
 		if (videoFrame && videoFrame->data) {
 			[videoBackground update:videoFrame];
+			[videoBackground drawWithViewportSize:self.bounds.size];
 		}
-		
-		[videoBackground draw];
 	} else {
 		glClear(GL_COLOR_BUFFER_BIT);
 	}

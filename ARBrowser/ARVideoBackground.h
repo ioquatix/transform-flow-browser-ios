@@ -11,20 +11,13 @@
 #import "ARVideoFrameController.h"
 
 /// Provides an OpenGL based video background which can display ARVideoFrame data.
-@interface ARVideoBackground : NSObject {
-	GLuint texture;
-	CGSize size, scale;
-		
-	int lastIndex;
-		
-	GLenum pixelFormat, internalFormat, dataType;
-}
+@interface ARVideoBackground : NSObject
 
 /// Update the video background with a given video frame.
 /// The frame data will only be updated if the index has changed.
 - (void) update: (ARVideoFrame*) frame;
 
 /// Render the video background to cover the entire screen (e.g. x,y coordinates -1 to +1)
-- (void) draw;
+- (void) drawWithViewportSize:(CGSize)size;
 
 @end

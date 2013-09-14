@@ -9,7 +9,7 @@
 #import "ARVideoBackground.h"
 
 // http://acius2.blogspot.com/2007/11/calculating-next-power-of-2.html
-uint32_t nextHighestPowerOf2 (uint32_t n)
+static uint32_t nextHighestPowerOf2 (uint32_t n)
 {
 	if (n == 0) return 0;
 	
@@ -24,6 +24,17 @@ uint32_t nextHighestPowerOf2 (uint32_t n)
 	return n;
 }
 
+@interface ARVideoBackground () {
+	GLuint texture;
+	CGSize _size, _scale;
+		
+	int lastIndex;
+	
+	GLenum pixelFormat, internalFormat, dataType;
+}
+
+@end
+
 @implementation ARVideoBackground
 
 - (id)init {
@@ -32,7 +43,7 @@ uint32_t nextHighestPowerOf2 (uint32_t n)
     if (self) {
         glGenTextures(1, &texture);
 		lastIndex = -1;
-		size = CGSizeMake(0, 0);
+		_size = CGSizeMake(0, 0);
     }
 
     return self;
@@ -50,16 +61,16 @@ uint32_t nextHighestPowerOf2 (uint32_t n)
 	glBindTexture(GL_TEXTURE_2D, texture);
 		
 	// Resize the texture if necessary.
-	if (size.width == 0) {
-		size.width = nextHighestPowerOf2(frame->size.width);
-		size.height = nextHighestPowerOf2(frame->size.height);
+	if (_size.width == 0) {
+		_size.width = nextHighestPowerOf2(frame->size.width);
+		_size.height = nextHighestPowerOf2(frame->size.height);
 		
-		glTexImage2D(GL_TEXTURE_2D, 0, frame->internalFormat, size.width, size.height, 0, frame->pixelFormat, frame->dataType, NULL);
+		glTexImage2D(GL_TEXTURE_2D, 0, frame->internalFormat, _size.width, _size.height, 0, frame->pixelFormat, frame->dataType, NULL);
 		glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 		glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 		
-		scale.width = (float)frame->size.width / (float)size.width;
-		scale.height = (float)frame->size.height / (float)size.height;
+		_scale.width = (float)frame->size.width / (float)_size.width;
+		_scale.height = (float)frame->size.height / (float)_size.height;
 	}
 	
 	// Update the texture data.
@@ -67,7 +78,7 @@ uint32_t nextHighestPowerOf2 (uint32_t n)
 	lastIndex = frame->index;
 }
 
-- (void) draw
+- (void) drawWithViewportSize:(CGSize)viewportSize
 {
 	glColor4f(1.0, 1.0, 1.0, 1.0);
 	
@@ -82,21 +93,39 @@ uint32_t nextHighestPowerOf2 (uint32_t n)
 	glLoadIdentity();
 	
 	glBindTexture(GL_TEXTURE_2D, texture);
-	
+
+	// Because we render at 90deg offset:
+	float viewportAspectRatio = viewportSize.height / viewportSize.width;
+	float frameAspectRatio = _scale.width / _scale.height;
+
+	//const float scaleFactor[2] = {1.325, 1.85};
+	float scaleFactor[2] = {1.0, 1.0};
+
+	scaleFactor[0] = viewportAspectRatio / frameAspectRatio;
+
 	float vertices[] = {
-		-1, -1,
-		-1, 1,
-		1, -1,
-		1, 1
+		-1 * scaleFactor[0], -1 * scaleFactor[1],
+		-1 * scaleFactor[0], 1 * scaleFactor[1],
+		1 * scaleFactor[0], -1 * scaleFactor[1],
+		1 * scaleFactor[0], 1 * scaleFactor[1]
 	};
 	
 	float texcoords[] = {
-		scale.width, scale.height,
-		0, scale.height,
-		scale.width, 0,
+		// Portrait
+		_scale.width, _scale.height,
+		0, _scale.height,
+		_scale.width, 0,
 		0, 0,
+
+/*
+		// Landscape
+		scale.width, 0,
+		scale.width, scale.height,
+		0, 0,
+		0, scale.height,
+*/
 	};
-	
+
 	glEnableClientState(GL_VERTEX_ARRAY);
 	glVertexPointer(2, GL_FLOAT, 0, vertices);
 	
