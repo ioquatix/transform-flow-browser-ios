@@ -97,9 +97,6 @@
 	
 	// Error handling here
 	[_delegate didResizeSurfaceForView:self];
-
-	self.frameRendererQueue = dispatch_queue_create("ARGLView Renderer", 0);
-	self.frameRendererSemaphore = dispatch_semaphore_create(1);
 	
 	return YES;
 }
@@ -123,9 +120,6 @@
 
 	glDeleteFramebuffersOES(1, &_framebuffer);
 	_framebuffer = 0;
-
-	self.frameRendererQueue = nil;
-	self.frameRendererSemaphore = nil;
 
 	if (oldContext != _context)
 		[EAGLContext setCurrentContext:oldContext];
@@ -169,12 +163,13 @@
 			return nil;
 		}
 
+		self.frameRendererQueue = dispatch_queue_create("ARGLView Renderer", 0);
+		self.frameRendererSemaphore = dispatch_semaphore_create(1);
+
 		// This line displays resized content at the correct aspect ratio,
 		// but it doesn't solve the underlying problem of setting _autoresize = YES.
 		//eaglLayer.contentsGravity = kCAGravityResizeAspectFill;
 		//self.autoresize = YES;
-
-		//_frameTimer = nil;
 	}
 
 	return self;
@@ -183,13 +178,8 @@
 - (void) dealloc
 {
     [self stopRendering];
-    
-	//[_frameTimer invalidate];
-	//_frameTimer = nil;
 	
 	[self _destroySurface];
-
-
 }
 
 - (void) renderFrameAsynchronously
