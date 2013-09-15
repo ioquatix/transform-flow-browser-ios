@@ -37,18 +37,16 @@
 namespace ARBrowser {
 	
 	void renderRing (float r) {
-		const unsigned R_RES = 32;
+		const unsigned STEPS = 32;
 		
-		Vec3 k(r, 0, 0), t;
-		Mat44 rotation;
-		MatrixRotationZ(rotation, (2 * M_PI) / R_RES);
-		
+		Vec3 k(r, 0, 0);
+		Mat44 rotation = rotate<Z>(R360 / STEPS);
+
 		VerticesT vertices;
-		for (unsigned i = 0; i < R_RES; i++) {
-			vertices.push_back(Vec3(k.x, k.y, k.z));
-			
-			MatrixVec3Multiply(t, k, rotation);
-			k = t;
+		for (unsigned i = 0; i < STEPS; i++) {
+			vertices.push_back(k);
+
+			k = rotation * k;
 		}
 		
 		renderVertices(vertices, GL_LINE_LOOP);
@@ -134,30 +132,7 @@ namespace ARBrowser {
 			points.push_back(Vec3(UPPER, x, 0));
 		}
 	}
-	
-	void generateGlobe (VerticesT & points, float radius) {
-		const unsigned Y_RES = 100, X_RES = 50;
-		Mat44 vr, hr;
-		MatrixRotationY(hr, (2 * M_PI) / Y_RES);
-		MatrixRotationX(vr, (2 * M_PI) / X_RES);
-		
-		Vec3 k(0, radius, 0), t;
-		
-		for (unsigned j = 0; j <= (Y_RES * X_RES); j++) {
-			if (j % Y_RES == 0) {
-				MatrixVec3Multiply(t, k, vr);
-				k = t;
-				
-				points.push_back(Vec3(k.x, k.y, k.z));
-			}
-			
-			MatrixVec3Multiply(t, k, hr);
-			k = t;
-			
-			points.push_back(Vec3(k.x, k.y, k.z));
-		}
-	}
-	
+
 	void renderVertices(const VerticesT & vertices, GLenum mode) {
 		glVertexPointer(3, GL_FLOAT, 0, &vertices[0]);
 		glEnableClientState(GL_VERTEX_ARRAY);
@@ -273,23 +248,23 @@ namespace ARBrowser {
 		Vec3 a = box.min;
 		Vec3 b = box.max;
 		
-		vertices.push_back(Vec3(a.x, a.y, a.z));
-		vertices.push_back(Vec3(b.x, a.y, a.z));
+		vertices.push_back(Vec3(a[X], a[Y], a[Z]));
+		vertices.push_back(Vec3(b[X], a[Y], a[Z]));
 
-		vertices.push_back(Vec3(a.x, a.y, a.z));
-		vertices.push_back(Vec3(a.x, b.y, a.z));
+		vertices.push_back(Vec3(a[X], a[Y], a[Z]));
+		vertices.push_back(Vec3(a[X], b[Y], a[Z]));
 		
-		vertices.push_back(Vec3(a.x, a.y, a.z));
-		vertices.push_back(Vec3(a.x, a.y, b.z));
+		vertices.push_back(Vec3(a[X], a[Y], a[Z]));
+		vertices.push_back(Vec3(a[X], a[Y], b[Z]));
 		
-		vertices.push_back(Vec3(b.x, b.y, b.z));
-		vertices.push_back(Vec3(a.x, b.y, b.z));
+		vertices.push_back(Vec3(b[X], b[Y], b[Z]));
+		vertices.push_back(Vec3(a[X], b[Y], b[Z]));
 		
-		vertices.push_back(Vec3(b.x, b.y, b.z));
-		vertices.push_back(Vec3(b.x, a.y, b.z));
+		vertices.push_back(Vec3(b[X], b[Y], b[Z]));
+		vertices.push_back(Vec3(b[X], a[Y], b[Z]));
 		
-		vertices.push_back(Vec3(b.x, b.y, b.z));
-		vertices.push_back(Vec3(b.x, b.y, a.z));
+		vertices.push_back(Vec3(b[X], b[Y], b[Z]));
+		vertices.push_back(Vec3(b[X], b[Y], a[Z]));
 		
 		glColor4f(0.0, 1.0, 0.0, 1.0);
 		renderVertices(vertices, GL_LINES);
@@ -349,17 +324,17 @@ namespace ARBrowser {
 			str_stream >> type_str;
 			if (type_str == TOKEN_VERTEX_POS) {
 				Vec3 pos;
-				str_stream >> pos.x >> pos.y >> pos.z;
+				str_stream >> pos[X] >> pos[Y] >> pos[Z];
 				positions.push_back(pos);
 			} else if (type_str == TOKEN_VERTEX_TEX) {
 				Vec2 tex;
-				str_stream >> tex.x >> tex.y;
+				str_stream >> tex[X] >> tex[Y];
 				// Inverse y coordinates
-				tex.y = 1.0 - tex.y;
+				tex[Y] = 1.0 - tex[Y];
 				texcoords.push_back(tex);
 			} else if (type_str == TOKEN_VERTEX_NOR) {
 				Vec3 nor;
-				str_stream >> nor.x >> nor.y >> nor.z;
+				str_stream >> nor[X] >> nor[Y] >> nor[Z];
 				normals.push_back(nor);
 			} else if (type_str == TOKEN_FACE) {
 				_ObjMeshFaceIndex face_index;
@@ -568,23 +543,23 @@ namespace ARBrowser {
 			Vec3 a = m_boundingBox.min;
 			Vec3 b = m_boundingBox.max;
 			
-			vertices.push_back(Vec3(a.x, a.y, a.z));
-			vertices.push_back(Vec3(b.x, a.y, a.z));
+			vertices.push_back(Vec3(a[X], a[Y], a[Z]));
+			vertices.push_back(Vec3(b[X], a[Y], a[Z]));
 
-			vertices.push_back(Vec3(a.x, a.y, a.z));
-			vertices.push_back(Vec3(a.x, b.y, a.z));
+			vertices.push_back(Vec3(a[X], a[Y], a[Z]));
+			vertices.push_back(Vec3(a[X], b[Y], a[Z]));
 			
-			vertices.push_back(Vec3(a.x, a.y, a.z));
-			vertices.push_back(Vec3(a.x, a.y, b.z));
+			vertices.push_back(Vec3(a[X], a[Y], a[Z]));
+			vertices.push_back(Vec3(a[X], a[Y], b[Z]));
 			
-			vertices.push_back(Vec3(b.x, b.y, b.z));
-			vertices.push_back(Vec3(a.x, b.y, b.z));
+			vertices.push_back(Vec3(b[X], b[Y], b[Z]));
+			vertices.push_back(Vec3(a[X], b[Y], b[Z]));
 			
-			vertices.push_back(Vec3(b.x, b.y, b.z));
-			vertices.push_back(Vec3(b.x, a.y, b.z));
+			vertices.push_back(Vec3(b[X], b[Y], b[Z]));
+			vertices.push_back(Vec3(b[X], a[Y], b[Z]));
 			
-			vertices.push_back(Vec3(b.x, b.y, b.z));
-			vertices.push_back(Vec3(b.x, b.y, a.z));
+			vertices.push_back(Vec3(b[X], b[Y], b[Z]));
+			vertices.push_back(Vec3(b[X], b[Y], a[Z]));
 			
 			glColor4f(0.0, 1.0, 0.0, 1.0);
 			renderVertices(vertices, GL_LINES);
@@ -624,25 +599,20 @@ namespace ARBrowser {
 		t1 = 0;
 		t2 = 1;
 
-		if (!raySlabsIntersection(origin.x, direction.x, min.x, max.x, t1, t2))
+		if (!raySlabsIntersection(origin[X], direction[X], min[X], max[X], t1, t2))
 			return false;
 		
-		if (!raySlabsIntersection(origin.y, direction.y, min.y, max.y, t1, t2))
+		if (!raySlabsIntersection(origin[Y], direction[Y], min[Y], max[Y], t1, t2))
 			return false;
 		
-		if (!raySlabsIntersection(origin.z, direction.z, min.z, max.z, t1, t2))
+		if (!raySlabsIntersection(origin[Z], direction[Z], min[Z], max[Z], t1, t2))
 			return false;
 		
 		return true;
 	}
 
 	BoundingBox BoundingBox::transform(const Mat44 & transform) const {
-		Vec3 newMin, newMax;
-		
-		MatrixVec3Multiply(newMin, min, transform);
-		MatrixVec3Multiply(newMax, max, transform);
-		
-		return BoundingBox(newMin, newMax);
+		return BoundingBox(transform * min, transform * max);
 	}
 
 	BoundingSphere::BoundingSphere(Vec3 _center, float _radius) : center(_center), radius(_radius) {
@@ -676,12 +646,11 @@ namespace ARBrowser {
 	}
 	
 	BoundingSphere BoundingSphere::transform(const Mat44 & transform) {
-		Vec3 newCenter, newEdge;
 		Vec3 edge = center + (Vec3(1, 0, 0) * radius);
-		
-		MatrixVec3Multiply(newCenter, center, transform);
-		MatrixVec3Multiply(newEdge, edge, transform);
-		
+
+		Vec3 newCenter = transform * center;
+		Vec3 newEdge = transform * edge;
+
 		return BoundingSphere(newCenter, (newEdge - newCenter).length());
 	}
 	
@@ -690,23 +659,23 @@ namespace ARBrowser {
 			min = pt;
 			max = pt;
 		} else {
-			if (pt.x < min.x)
-				min.x = pt.x;
+			if (pt[X] < min[X])
+				min[X] = pt[X];
 			
-			if (pt.y < min.y)
-				min.y = pt.y;
+			if (pt[Y] < min[Y])
+				min[Y] = pt[Y];
 			
-			if (pt.z < min.z)
-				min.z = pt.z;
+			if (pt[Z] < min[Z])
+				min[Z] = pt[Z];
 			
-			if (pt.x > max.x)
-				max.x = pt.x;
+			if (pt[X] > max[X])
+				max[X] = pt[X];
 			
-			if (pt.y > max.y)
-				max.y = pt.y;
+			if (pt[Y] > max[Y])
+				max[Y] = pt[Y];
 			
-			if (pt.z > max.z)
-				max.z = pt.z;
+			if (pt[Z] > max[Z])
+				max[Z] = pt[Z];
 		}
 		
 		count++;
@@ -718,177 +687,5 @@ namespace ARBrowser {
 
 	float BoundingBox::radius() const {
 		return (max - min).length() / 2.0;
-	}
-	
-	// Runs a point through the inverse project and view matrix - convenience function.
-	static Vec3 calculatePoint(const Mat44 & projInv, const Mat44 viewInv, Vec3 p) {
-		Vec4 t0(p.x, p.y, p.z, 1.0);
-		
-		Vec4 t1, t2;
-		
-		MatrixVec4Multiply(t1, t0, projInv);
-		MatrixVec4Multiply(t2, t1, viewInv);
-		
-		Vec3 r(t2.x, t2.y, t2.z);
-		r /= t2.w;
-		
-		return r;
-	}
-	
-	static std::ostream & operator<< (std::ostream & output, const Vec3 & v) {
-		output << v.x << ", " << v.y << ", " << v.z;
-		
-		return output;
-	}
-	
-	bool findIntersection(const Mat44 & proj, const Mat44 & view, float viewport[4], const Vec3 & worldOrigin, Vec2 screenCoords, const std::vector<BoundingSphere> & spheres, IntersectionResult & result) {
-		Mat44 projInv, viewInv;
-		
-		MatrixInverse(projInv, proj);
-		MatrixInverse(viewInv, view);
-		
-		// viewport = (X, Y, Width, Height)
-		// Convert screen coordinate to clip coordinates
-		screenCoords.x -= viewport[0];
-		screenCoords.y -= viewport[1];
-		
-		screenCoords.x /= viewport[2];
-		screenCoords.y /= viewport[3];
-		
-		screenCoords.x = (screenCoords.x * 2.0) - 1.0;
-		screenCoords.y = (screenCoords.y * 2.0) - 1.0;
-		
-		// We are looking down -z axis
-		// I'm not completely sure why this is 1, and not -1, but the coordinates end up reversed otherwise!
-		Vec3 front(screenCoords.x, screenCoords.y, 1);
-		Vec3 p2 = calculatePoint(projInv, viewInv, front);
-				
-		Vec3 origin(viewInv.f[12], viewInv.f[13], viewInv.f[14]);
-		Vec3 direction = (p2 - origin).normalized();
-				
-		float t1, t2;
-		
-		bool hit = false;
-		result.hits = 0;
-		result.index = 0;
-		result.origin = origin;
-		result.direction = direction;
-		
-		for (std::size_t i = 0; i < spheres.size(); i++) {
-			if (spheres[i].intersectsWith(origin + worldOrigin, direction, t1, t2)) {
-				result.hits++;
-				
-				if (!hit) {
-					hit = true;
-					result.index = i;
-					result.t1 = t1;
-					result.t2 = t2;
-				} else {
-					if (t1 < result.t1) {
-						result.index = i;
-						result.t1 = t1;
-						result.t2 = t2;
-					}
-				}
-			}
-		}
-		
-		return hit;
-	}
-
-	Ray calculateRayFromScreenCoordinates(const Mat44 & proj, const Mat44 & view, float viewport[4], Vec2 screenCoords)
-	{
-		Mat44 projInv, viewInv;
-		
-		MatrixInverse(projInv, proj);
-		MatrixInverse(viewInv, view);
-		
-		// viewport = (X, Y, Width, Height)
-		// Convert screen coordinate to clip coordinates
-		screenCoords.x -= viewport[0];
-		screenCoords.y -= viewport[1];
-		
-		screenCoords.x /= viewport[2];
-		screenCoords.y /= viewport[3];
-		
-		screenCoords.x = (screenCoords.x * 2.0) - 1.0;
-		screenCoords.y = (screenCoords.y * 2.0) - 1.0;
-		
-		// We are looking down -z axis
-		// I'm not completely sure why this is 1, and not -1, but the coordinates end up reversed otherwise!
-		Vec3 front(screenCoords.x, screenCoords.y, 1);
-		Vec3 p2 = calculatePoint(projInv, viewInv, front);
-				
-		Vec3 origin(viewInv.f[12], viewInv.f[13], viewInv.f[14]);
-		Vec3 direction = (p2 - origin).normalized();
-
-		return {origin, direction};
-	}
-
-	bool intersectAtY0(const Ray & ray, Vec3 & at)
-	{
-		if (fabsf(ray.direction.y) < FLT_EPSILON) return false;
-
-		// Calculate the time when the ray passes through z=0
-		float t = ray.origin.y / -ray.direction.y;
-
-		at = ray.origin + (ray.direction * t);
-
-		return true;
-	}
-
-	static bool intersectAtX0(const Ray & ray, Vec3 & at)
-	{
-		if (fabsf(ray.direction.y) < FLT_EPSILON) return false;
-
-		// Calculate the time when the ray passes through x=0
-		float t = ray.origin.x / -ray.direction.x;
-
-		at = ray.origin + (ray.direction * t);
-
-		return true;
-	}
-
-	static Ray calculateViewRay(const Mat44 & proj, const Mat44 & view, float viewport[4], const Vec2 & factor)
-	{
-		return calculateRayFromScreenCoordinates(proj, view, viewport, Vec2(viewport[0] + viewport[2] * factor.x, viewport[1] + viewport[3] * factor.y));
-	}
-
-	BoundingBox calculateViewFrustumBoundingBox(const Mat44 & proj, const Mat44 & view, float viewport[4])
-	{
-		BoundingBox box;
-
-		{
-			Ray minX = calculateViewRay(proj, view, viewport, Vec2(0.0, 0.5));
-			Ray maxX = calculateViewRay(proj, view, viewport, Vec2(1.0, 0.5));
-			Ray minY = calculateViewRay(proj, view, viewport, Vec2(0.5, 0.0));
-			Ray maxY = calculateViewRay(proj, view, viewport, Vec2(0.5, 1.0));
-
-			Vec3 atMinX, atMaxX, atMaxY, atMaxZ;
-			if (intersectAtX0(minX, atMinX) && intersectAtX0(maxX, atMaxX) && intersectAtX0(maxY, atMaxY) && intersectAtY0(minY, atMaxZ)) {
-				box.add(Vec3(0, 0, 0));
-				box.add(atMaxY);
-				box.add(atMinX);
-				box.add(atMaxX);
-
-				box.add(atMaxZ);
-				box.add(-atMaxZ);
-			}
-			else {
-				box.add(Vec3(0, 0.5, 0.5));
-				box.add(Vec3(0, 0.5, 0.5));
-			}
-		}
-
-		return box;
-	}
-
-	float scaleFactorToFitFrustum(const BoundingBox & container, const BoundingBox & child)
-	{
-		// We make a few dirty assumptions. This isn't a general purpose function.
-		Vec3 containerSize = (container.max - container.min);
-		Vec3 childSize = (child.max - child.min);
-
-		return containerSize.y / childSize.z;
 	}
 }

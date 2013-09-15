@@ -24,10 +24,6 @@
 		7E233731134B3E5B00BEFB33 /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7E233730134B3E5B00BEFB33 /* CoreMedia.framework */; };
 		7E233735134B3FBF00BEFB33 /* ARRendering.mm in Sources */ = {isa = PBXBuildFile; fileRef = 7E233734134B3FBF00BEFB33 /* ARRendering.mm */; };
 		7E233738134B40C200BEFB33 /* ARWorldLocation.mm in Sources */ = {isa = PBXBuildFile; fileRef = 7E233737134B40C200BEFB33 /* ARWorldLocation.mm */; };
-		7E23374E134B41F100BEFB33 /* Matrix.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7E23373B134B41F100BEFB33 /* Matrix.cpp */; };
-		7E233750134B41F100BEFB33 /* Transform.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7E233740134B41F100BEFB33 /* Transform.cpp */; };
-		7E233751134B41F100BEFB33 /* Vector.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7E233742134B41F100BEFB33 /* Vector.cpp */; };
-		7E233752134B41F100BEFB33 /* neon_matrix_impl.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7E233745134B41F100BEFB33 /* neon_matrix_impl.cpp */; };
 		7E61C9741354A51B00857A4D /* CoreMotion.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7E61C9731354A51B00857A4D /* CoreMotion.framework */; };
 		7E61C9791354ACE200857A4D /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7E61C9781354ACE200857A4D /* CoreLocation.framework */; };
 		7E61C97C1354B44B00857A4D /* ARWorldPoint.mm in Sources */ = {isa = PBXBuildFile; fileRef = 7E61C97B1354B44B00857A4D /* ARWorldPoint.mm */; };
@@ -88,18 +84,6 @@
 		7E233734134B3FBF00BEFB33 /* ARRendering.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ARRendering.mm; sourceTree = "<group>"; };
 		7E233736134B40C200BEFB33 /* ARWorldLocation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARWorldLocation.h; sourceTree = "<group>"; };
 		7E233737134B40C200BEFB33 /* ARWorldLocation.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ARWorldLocation.mm; sourceTree = "<group>"; };
-		7E23373A134B41F100BEFB33 /* Endian.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Endian.h; sourceTree = "<group>"; };
-		7E23373B134B41F100BEFB33 /* Matrix.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Matrix.cpp; sourceTree = "<group>"; };
-		7E23373C134B41F100BEFB33 /* Matrix.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Matrix.h; sourceTree = "<group>"; };
-		7E23373D134B41F100BEFB33 /* Quaternion.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Quaternion.h; sourceTree = "<group>"; };
-		7E233740134B41F100BEFB33 /* Transform.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Transform.cpp; sourceTree = "<group>"; };
-		7E233741134B41F100BEFB33 /* Transform.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Transform.h; sourceTree = "<group>"; };
-		7E233742134B41F100BEFB33 /* Vector.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Vector.cpp; sourceTree = "<group>"; };
-		7E233743134B41F100BEFB33 /* Vector.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Vector.h; sourceTree = "<group>"; };
-		7E233745134B41F100BEFB33 /* neon_matrix_impl.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = neon_matrix_impl.cpp; sourceTree = "<group>"; };
-		7E233746134B41F100BEFB33 /* neon_matrix_impl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = neon_matrix_impl.h; sourceTree = "<group>"; };
-		7E233748134B41F100BEFB33 /* common_macros.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = common_macros.h; sourceTree = "<group>"; };
-		7E23374D134B41F100BEFB33 /* vfp_clobbers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = vfp_clobbers.h; sourceTree = "<group>"; };
 		7E3CF614153EAD4300027867 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
 		7E61C9731354A51B00857A4D /* CoreMotion.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMotion.framework; path = System/Library/Frameworks/CoreMotion.framework; sourceTree = SDKROOT; };
 		7E61C9781354ACE200857A4D /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
@@ -215,7 +199,6 @@
 		7E2336BF134AD1FF00BEFB33 /* ARBrowser */ = {
 			isa = PBXGroup;
 			children = (
-				7E233739134B41F100BEFB33 /* Math */,
 				7EBB6E2813C5465A0028A3E7 /* ARMainWindow.xib */,
 				7E2336C8134AD1FF00BEFB33 /* ARBrowserAppDelegate.h */,
 				7E2336C9134AD1FF00BEFB33 /* ARBrowserAppDelegate.mm */,
@@ -266,41 +249,6 @@
 				7E233734134B3FBF00BEFB33 /* ARRendering.mm */,
 			);
 			name = Internal;
-			sourceTree = "<group>";
-		};
-		7E233739134B41F100BEFB33 /* Math */ = {
-			isa = PBXGroup;
-			children = (
-				7E23373A134B41F100BEFB33 /* Endian.h */,
-				7E23373C134B41F100BEFB33 /* Matrix.h */,
-				7E23373B134B41F100BEFB33 /* Matrix.cpp */,
-				7E23373D134B41F100BEFB33 /* Quaternion.h */,
-				7E233741134B41F100BEFB33 /* Transform.h */,
-				7E233740134B41F100BEFB33 /* Transform.cpp */,
-				7E233743134B41F100BEFB33 /* Vector.h */,
-				7E233742134B41F100BEFB33 /* Vector.cpp */,
-				7E233744134B41F100BEFB33 /* neonmath */,
-				7E233747134B41F100BEFB33 /* vfpmath */,
-			);
-			path = Math;
-			sourceTree = "<group>";
-		};
-		7E233744134B41F100BEFB33 /* neonmath */ = {
-			isa = PBXGroup;
-			children = (
-				7E233745134B41F100BEFB33 /* neon_matrix_impl.cpp */,
-				7E233746134B41F100BEFB33 /* neon_matrix_impl.h */,
-			);
-			path = neonmath;
-			sourceTree = "<group>";
-		};
-		7E233747134B41F100BEFB33 /* vfpmath */ = {
-			isa = PBXGroup;
-			children = (
-				7E233748134B41F100BEFB33 /* common_macros.h */,
-				7E23374D134B41F100BEFB33 /* vfp_clobbers.h */,
-			);
-			path = vfpmath;
 			sourceTree = "<group>";
 		};
 		7EC0D42E151ED81A006F1D9F /* Other Frameworks */ = {
@@ -437,10 +385,6 @@
 				7E23372B134AEAC100BEFB33 /* ARVideoBackground.m in Sources */,
 				7E233735134B3FBF00BEFB33 /* ARRendering.mm in Sources */,
 				7E233738134B40C200BEFB33 /* ARWorldLocation.mm in Sources */,
-				7E23374E134B41F100BEFB33 /* Matrix.cpp in Sources */,
-				7E233750134B41F100BEFB33 /* Transform.cpp in Sources */,
-				7E233751134B41F100BEFB33 /* Vector.cpp in Sources */,
-				7E233752134B41F100BEFB33 /* neon_matrix_impl.cpp in Sources */,
 				7E8D4CB1134FE04A00868D6B /* ARBrowserView.mm in Sources */,
 				7E61C97C1354B44B00857A4D /* ARWorldPoint.mm in Sources */,
 				7E61C97F1354B4E100857A4D /* ARModel.mm in Sources */,

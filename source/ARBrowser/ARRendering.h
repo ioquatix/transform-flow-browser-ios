@@ -9,9 +9,6 @@
 #ifndef _ARBROWSER_RENDERING_H
 #define _ARBROWSER_RENDERING_H
 
-#include "Math/Vector.h"
-#include "Math/Matrix.h"
-
 #include "ARWorldPoint.h"
 
 #include <string>
@@ -27,6 +24,8 @@
 
 /// The main namespace for the ARBrowser C++ implementation.
 namespace ARBrowser {
+	using namespace Euclid::Numerics;
+
 	const double R2D = (180.0 / M_PI);
 	const double D2R = (M_PI / 180.0);
 	
@@ -166,30 +165,6 @@ namespace ARBrowser {
 			
 			const BoundingBox & boundingBox () const { return m_boundingBox; }
 	};
-	
-	/// Result of intersection tests using findIntersection().
-	struct IntersectionResult {
-		unsigned hits;
-		Vec3 origin, direction;
-		
-		std::size_t index;
-		float t1, t2;
-	};
-	
-	/// Find intersections using a given point on the screen, and a set of bounding spheres.
-	bool findIntersection(const Mat44 & proj, const Mat44 & view, float viewport[4], const Vec3 & origin, Vec2 screenCoords, const std::vector<BoundingSphere> & spheres, IntersectionResult & result);
-
-	struct Ray {
-		Vec3 origin, direction;
-	};
-
-	Ray calculateRayFromScreenCoordinates(const Mat44 & proj, const Mat44 & view, float viewport[4], Vec2 screenCoords);
-
-	bool intersectAtY0(const Ray & ray, Vec3 & at);
-
-	BoundingBox calculateViewFrustumBoundingBox(const Mat44 & proj, const Mat44 & view, float viewport[4]);
-
-	float scaleFactorToFitFrustum(const BoundingBox & container, const BoundingBox & child);
 }
 
 #endif

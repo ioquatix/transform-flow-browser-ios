@@ -142,6 +142,8 @@ ARLocationCoordinate convertFromDegrees(CLLocationCoordinate2D location) {
 
 - (Vec3) calculateRelativePositionOf:(ARWorldLocation*)other
 {
+	using namespace Euclid::Numerics;
+
 	ARLocationCoordinate from = convertFromDegrees(_coordinate), to = convertFromDegrees(other->_coordinate);
 	
 	ARLocationCoordinate horizontal = {from.latitude, to.longitude};
@@ -149,20 +151,20 @@ ARLocationCoordinate convertFromDegrees(CLLocationCoordinate2D location) {
 		
 	Vec3 r;
 	// We calculate x by varying longitude (east <-> west)
-	r.x = calculateDistanceBetween(from, horizontal, _altitude);
+	r[X] = calculateDistanceBetween(from, horizontal, _altitude);
 	
 	// We calculate y by varying latitude (north <-> south)
-	r.y = calculateDistanceBetween(from, vertical, _altitude);
+	r[Y] = calculateDistanceBetween(from, vertical, _altitude);
 	
 	// If longitude is less than origin, inverse x coordinate.
 	if (to.longitude < from.longitude)
-		r.x *= -1.0;
+		r[X] *= -1.0;
 	
 	// If latitude is less than origin, inverse y coordinate
 	if (to.latitude < from.latitude)
-		r.y *= -1.0;
+		r[Y] *= -1.0;
 	
-	r.z = other.altitude - _altitude;
+	r[Z] = other.altitude - _altitude;
 	
 	return r;
 }

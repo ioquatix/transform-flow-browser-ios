@@ -26,6 +26,8 @@
 
 @property(nonatomic,assign) NSTimeInterval timestampOffset;
 
+@property(nonatomic,assign) double cameraFieldOfView;
+
 - (ARWorldLocation *) worldLocation;
 - (CMAcceleration) currentGravity;
 

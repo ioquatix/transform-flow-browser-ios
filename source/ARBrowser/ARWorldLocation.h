@@ -10,8 +10,8 @@
 
 #import <CoreLocation/CoreLocation.h>
 
-#import "Vector.h"
-#import "Matrix.h"
+#import <Euclid/Numerics/Vector.h>
+#import <Euclid/Numerics/Matrix.h>
 
 typedef double ARLocationRadians;
 typedef double ARLocationAltitude;
@@ -20,6 +20,11 @@ struct ARLocationCoordinate {
 	ARLocationRadians latitude;
 	ARLocationRadians longitude;
 };
+
+using Euclid::Numerics::Vec3;
+using Euclid::Numerics::Mat44;
+typedef Euclid::Numerics::Vector<3, double> Vec3d;
+
 
 /// Convert latitude/longitude/altitude to Earth-Centered Earth-Fixed coordinates:
 Vec3d convertToECEF(CLLocationCoordinate2D coordinate, ARLocationAltitude altitude);

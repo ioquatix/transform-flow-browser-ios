@@ -81,7 +81,9 @@
 }
 
 - (void) draw
-{	
+{
+	using namespace Euclid::Numerics;
+
 	// We can only update if there was a view given.
 	if (_dirty && _overlay) {
 		[self updateNow];
@@ -106,7 +108,7 @@
 	};
 	
 	Mat44 m;
-	glGetFloatv(GL_MODELVIEW_MATRIX, m.f);
+	glGetFloatv(GL_MODELVIEW_MATRIX, m.data());
 
 	// Location Controller code:
 	//CMAcceleration gravity = [[ARLocationController sharedInstance] currentGravity];
@@ -120,8 +122,7 @@
 	Vec3 up(0, 0, 1);
 	
 	// The x-axis we desire.
-	Vec3 r = up.cross(f);
-	r.normalize();
+	Vec3 r = cross_product(up, f).normalize();
 	
 	Vec3 x(1.0, 0.0, 0.0);
 
@@ -129,34 +130,35 @@
 	
 	// Calculate the angle between what we want and regular x-axis
 	float angle = acos(x.dot(r));
-	
+
+	auto mf = m.data();
+
 	Vec3 scale(
-		Vec3(m.f[0], m.f[4], m.f[8]).length(),
-		Vec3(m.f[1], m.f[5], m.f[9]).length(),
-		Vec3(m.f[2], m.f[6], m.f[10]).length()
+		Vec3(mf[0], mf[4], mf[8]).length(),
+		Vec3(mf[1], mf[5], mf[9]).length(),
+		Vec3(mf[2], mf[6], mf[10]).length()
 	);
 	
 	// Discard all transform except translation.
-	m.f[ 0] = 1; m.f[ 4] = 0; m.f[ 8] = 0;
-	m.f[ 1] = 0; m.f[ 5] = 1; m.f[ 9] = 0;
-	m.f[ 2] = 0; m.f[ 6] = 0; m.f[10] = 1;
+	mf[ 0] = 1; mf[ 4] = 0; mf[ 8] = 0;
+	mf[ 1] = 0; mf[ 5] = 1; mf[ 9] = 0;
+	mf[ 2] = 0; mf[ 6] = 0; mf[10] = 1;
 	
 	glMatrixMode(GL_MODELVIEW);
 	glPushMatrix();
 	glLoadIdentity();
 	
 	// Load the original translation and scale:
-	glMultMatrixf(m.f);
-	glScalef(scale.x, scale.y, scale.z);
+	glMultMatrixf(mf);
+	glScalef(scale[X], scale[Y], scale[Z]);
 	
 	//NSLog(@"Angle: %0.3f degrees", angle * ARBrowser::R2D);
 	
 	if (angle > 0.01) {
 		// Adjust view rotation:
-		Vec3 axis = x.cross(r);
-		axis.normalize();
+		Vec3 axis = cross_product(x, r).normalize();
 		
-		glRotatef(angle * ARBrowser::R2D, axis.x, axis.y, axis.z);
+		glRotatef(angle * ARBrowser::R2D, axis[X], axis[Y], axis[Z]);
 		
 		//NSLog(@"Axis: %0.3f, %0.3f, %0.3f", axis.x, axis.y, axis.z);
 	}

@@ -16,7 +16,7 @@
     if (self) {
         self.metadata = [[NSMutableDictionary alloc] init];
 		
-		MatrixIdentity(_transform);
+		_transform = Euclid::Numerics::IDENTITY;
     }
     
     return self;

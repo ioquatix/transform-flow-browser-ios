@@ -9,11 +9,16 @@
 #import "ARBrowserView.h"
 
 #import "ARMotionModelController.h"
+
 #include <TransformFlow/BasicSensorMotionModel.h>
+#include <TransformFlow/HybridMotionModel.h>
+#include <Euclid/Numerics/Matrix.Inverse.h>
 
 #import "ARRendering.h"
 #import "ARWorldPoint.h"
 #import "ARModel.h"
+
+using Euclid::Numerics::Vec2;
 
 struct ARBrowserVisibleWorldPoint {
 	float distance;
@@ -72,7 +77,7 @@ static Vec2 positionInView (UIView * view, UITouch * touch)
 		
 		_maximumDistance = 500.0;
 		_farDistance = _maximumDistance / 2.0;
-		
+
 		_displayRadar = YES;
 		
 		_radarCenter.x = -1;
@@ -82,61 +87,12 @@ static Vec2 positionInView (UIView * view, UITouch * touch)
 	return self;
 }
 
-- (void)touchesBegan: (NSSet *)touches withEvent: (UIEvent *)event
-{
-	for (UITouch * touch in touches) {
-		// viewport: (X, Y, Width, Height)
-		CGRect bounds = [self bounds];
-		float viewport[4] = {bounds.origin.x, bounds.origin.y, bounds.size.width, bounds.size.height};
-
-		ARBrowser::Ray ray = ARBrowser::calculateRayFromScreenCoordinates(_projectionMatrix, _viewMatrix, viewport, positionInView(self, touch));
-		
-		ARWorldLocation * origin = [self.motionModelController worldLocation];
-		NSArray * worldPoints = [[self delegate] worldPoints];
-
-		ARWorldPoint * closestWorldPoint = nil;
-		float closestIntersection = INFINITY, t1, t2;
-
-		for (ARWorldPoint * worldPoint in worldPoints) {
-			// We need to calculate collision detection in the same coordinate system as drawn on screen.
-			Vec3 offset = [origin calculateRelativePositionOf:worldPoint];
-			
-			// Calculate actual (non-scaled) distance.
-			float distance = offset.length();
-			
-			// Cull the object if it is outside the view bounds.
-			if (distance < _minimumDistance || distance > _maximumDistance) {
-				continue;
-			}
-
-			ARBrowser::BoundingBox box = [worldPoint.model boundingBox];			
-			box = box.transform([worldPoint transform]);
-
-			box.min += offset;
-			box.max += offset;
-
-			//ARBrowser::BoundingSphere sphere(box.center(), box.radius());
-
-			// Box ray-slab intersection requires a line segment, not just a line.
-			if (box.intersectsWith(ray.origin, ray.direction * _maximumDistance, t1, t2)) {
-				if (t1 < closestIntersection) {
-					closestIntersection = t1;
-					closestWorldPoint = worldPoint;
-				}
-			}
-		}
-
-		if (closestWorldPoint) {
-			[self.delegate browserView:self didSelect:closestWorldPoint];
-		}
-	}
-}
-
 - (void) drawRadar {
+	using namespace Euclid::Numerics;
+
 	ARWorldLocation * origin = [self.motionModelController worldLocation];
 	CMAcceleration gravity = [self.motionModelController currentGravity];
-	//NSLog(@"Bearing: %0.3f", origin.rotation);
-	
+
 	NSArray * worldPoints = nil;
 	if ([self.delegate respondsToSelector:@selector(worldPointsFromLocation:withinDistance:)]) {
 		worldPoints = [self.delegate worldPointsFromLocation:origin withinDistance:self.maximumDistance * 2.0];
@@ -154,7 +110,7 @@ static Vec2 positionInView (UIView * view, UITouch * touch)
 			// This method is pretty slow:
 			Vec3 delta = [origin calculateRelativePositionOf:point];
 			// Ignore altitude in distance calculations:
-			delta.z = 0;
+			delta[Z] = 0;
 			
 			if (delta.length() == 0) {
 				radarPoints.push_back(delta);
@@ -184,10 +140,10 @@ static Vec2 positionInView (UIView * view, UITouch * touch)
 	
 	CGSize radarSize = CGSizeMake(40, 40);
 	CGSize viewSize = [self bounds].size;
-	
-	MATRIX orthoProjection;
-	MatrixOrthoRH(orthoProjection, viewSize.width, viewSize.height, -1, 1, false);
-	glMultMatrixf(orthoProjection.f);
+
+	auto projectionBox = Euclid::Geometry::AlignedBox3::from_center_and_size(ZERO, Vec3(viewSize.width, viewSize.height, 2));
+	Mat44 orthoProjection = Euclid::Geometry::orthographic_projection_matrix(projectionBox);
+	glMultMatrixf(orthoProjection.data());
 	
 	//float minDimension = std::min(viewSize.width, viewSize.height);
 	//float scale = minDimension / ARBrowser::RadarDiameter;
@@ -226,7 +182,7 @@ static Vec2 positionInView (UIView * view, UITouch * touch)
 			
 			Vec3 north(0, 1, 0);
 			
-			rotationAxis = at.cross(north);
+			rotationAxis = cross_product(at, north);
 			forwardAngle = acos(at.dot(north));
 		} else {
 			flat = YES;
@@ -234,7 +190,7 @@ static Vec2 positionInView (UIView * view, UITouch * touch)
 	}
 	
 	if (!flat) {
-		glRotatef(-forwardAngle * ARBrowser::R2D, rotationAxis.x, rotationAxis.y, rotationAxis.z);		
+		glRotatef(-forwardAngle * ARBrowser::R2D, rotationAxis[X], rotationAxis[Y], rotationAxis[Z]);
 	} else {
 		// We do this to avoid strange behaviour around the vertical axis:
 		glRotatef([origin rotation], 0, 0, 1);
@@ -243,8 +199,7 @@ static Vec2 positionInView (UIView * view, UITouch * touch)
 	ARBrowser::renderRadar(radarPoints, radarEdgePoints, scale / 2.0);
 	
 	if (!flat) {		
-		Mat44 inverseViewMatrix;
-		MatrixInverse(inverseViewMatrix, _viewMatrix);
+		Mat44 inverseViewMatrix = inverse(_viewMatrix);
 		
 		// This matrix now contains the transform where +Y maps to North
 		// The North axis of the phone is mapped to global North axis.
@@ -253,17 +208,18 @@ static Vec2 positionInView (UIView * view, UITouch * touch)
 		
 		Vec3 forward(0, 0, -1), deviceForward;
 		// We calculate the forward vector in global space where (0, 1, 0) is north, (0, 0, -1) is down, (1, 0, 0) is approximately east.
-		MatrixVec3Multiply(deviceForward, forward, inverseViewMatrix);
+		deviceForward = inverseViewMatrix * forward;
+
 		//NSLog(@"Device forward: %0.3f, %0.3f, %0.3f", deviceForward.x, deviceForward.y, deviceForward.z);
 		
-		deviceForward.z = 0;
-		deviceForward.normalize();
+		deviceForward[Z] = 0;
+		deviceForward = deviceForward.normalize();
 		
 		float bearing = acos(deviceForward.dot(north));
-		Vec3 r = deviceForward.cross(north).normalize();
+		Vec3 r = cross_product(deviceForward, north).normalize();
 		
 		//NSLog(@"Bearing: %0.3f", bearing);
-		glRotatef(-bearing * ARBrowser::R2D, r.x, r.y, r.z);
+		glRotatef(-bearing * ARBrowser::R2D, r[X], r[Y], r[Z]);
 		ARBrowser::renderRadarFieldOfView();
 	}
 	
@@ -274,6 +230,8 @@ static Vec2 positionInView (UIView * view, UITouch * touch)
 }
 
 - (void) update {
+	using namespace Euclid::Numerics;
+
 	if (videoFrameController) {
 		ARVideoFrame * videoFrame = [videoFrameController videoFrame];
 		
@@ -308,7 +266,7 @@ static Vec2 positionInView (UIView * view, UITouch * touch)
 		Vec3 _f(gravity.x, gravity.y, gravity.z);
 		_f.normalize();
 		
-		Vec3 f(_f.x, _f.y, _f.z);
+		Vec3 f = _f;
 		Vec3 down(0, 0, -1);
 		
 		//NSLog(@"f: %0.4f, %0.4f, %0.4f, Length: %0.4f", _f.x, _f.y, _f.z, _f.length());
@@ -318,11 +276,11 @@ static Vec2 positionInView (UIView * view, UITouch * touch)
 		//NSLog(@"Angle: %0.5f", sz);
 		
 		if (sz > 0.01) {
-			Vec3 s = down.cross(f);
+			Vec3 s = cross_product(down, f);
 			
 			//NSLog(@"d x f: %0.4f, %0.4f, %0.4f, Lenght: %0.4f", s.x, s.y, s.z, s.length());
 			
-			glRotatef(sz * ARBrowser::R2D, s.x, s.y, s.z);
+			glRotatef(sz * ARBrowser::R2D, s[X], s[Y], s[Z]);
 		}
 		
 		// Move the origin down 1 meter.
@@ -333,18 +291,18 @@ static Vec2 positionInView (UIView * view, UITouch * touch)
 	glMatrixMode(GL_PROJECTION);
 	
 	CGSize viewSize = [self bounds].size;
-	
-	MATRIX perspectiveProjection;
-	MatrixPerspectiveFovRH(perspectiveProjection, 40.0 * ARBrowser::D2R, viewSize.width / viewSize.height, 0.1f, 1000.0f, 0);
-	glMultMatrixf(perspectiveProjection.f);
+
+	Mat44 perspectiveProjection;
+	perspectiveProjection = perspective_projection_matrix<RealT>(self.motionModelController.cameraFieldOfView * ARBrowser::D2R, viewSize.width / viewSize.height, 0.1, 1000.0);
+	glMultMatrixf(perspectiveProjection.data());
 	
 	glMatrixMode(GL_MODELVIEW);
 	ARWorldLocation * origin = [self.motionModelController worldLocation];
 	
 	glRotatef([origin rotation], 0, 0, 1);
 	
-	glGetFloatv(GL_PROJECTION_MATRIX, _projectionMatrix.f);
-	glGetFloatv(GL_MODELVIEW_MATRIX, _viewMatrix.f);
+	glGetFloatv(GL_PROJECTION_MATRIX, _projectionMatrix.data());
+	glGetFloatv(GL_MODELVIEW_MATRIX, _viewMatrix.data());
 	
 	glColor4f(0.7, 0.7, 0.7, 0.2);
 	glLineWidth(2.0);
@@ -388,13 +346,13 @@ static Vec2 positionInView (UIView * view, UITouch * touch)
 	for (ARWorldPoint * point in worldPoints) {
 		Vec3 delta = [origin calculateRelativePositionOf:point];
 		
-		delta.z = -2;
+		delta[Z] = -2;
 		
 		//NSLog(@"Delta: %0.3f, %0.3f, %0.3f", delta.x, delta.y, delta.z);
 		
 		// Distance as a bird flies (e.g. ignoring altitude)
 		Vec3 birdFlys = delta;
-		birdFlys.z = 0;
+		birdFlys[Z] = 0;
 		
 		// Calculate actual (non-scaled) distance.
 		float distance = birdFlys.length();
@@ -413,10 +371,10 @@ static Vec2 positionInView (UIView * view, UITouch * touch)
 		const ARBrowserVisibleWorldPoint & p = visibleWorldPoints[i];
 		glPushMatrix();
 		
-		glTranslatef(p.delta.x, p.delta.y, p.delta.z);
+		glTranslatef(p.delta[X], p.delta[Y], p.delta[Z]);
 		
 		glRotatef(p.point.rotation, 0.0, 0.0, 1.0);
-		glMultMatrixf(p.point.transform.f);
+		glMultMatrixf(p.point.transform.data());
 		[p.point.model draw];
 		
 		// Render the bounding sphere for debugging.

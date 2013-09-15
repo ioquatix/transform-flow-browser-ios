@@ -10,6 +10,17 @@
 
 @implementation ARMotionModelController
 
+- (id)init
+{
+    self = [super init];
+
+	if (self) {
+        self.cameraFieldOfView = 55.0;
+    }
+
+    return self;
+}
+
 - (void)videoFrameController:(ARVideoFrameController *)controller didCaptureFrame:(CGImageRef)buffer atTime:(CMTime)time {
 	TransformFlow::ImageUpdate image_update;
 
@@ -22,7 +33,14 @@
 
 	image_update.time_offset = frame->timestamp;
 
+	// This is +/- 2 degrees for most iOS devices.
+	image_update.field_of_view = TransformFlow::degrees(_cameraFieldOfView);
+
 	_motionModel->update(image_update);
+
+	for (auto & note : image_update.notes) {
+		NSLog(@"Note: %s", note.c_str());
+	}
 }
 
 - (void) calculateTimestampOffset
