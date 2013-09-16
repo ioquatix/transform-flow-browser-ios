@@ -121,7 +121,7 @@ static Vec2 positionInView (UIView * view, UITouch * touch)
 				float length = sqrt(delta.length() / _maximumDistance);
 				
 				// Normalize the vector so we can scale its length appropriately.
-				delta.normalize();
+				delta = delta.normalize();
 				
 				if (length <= 1.0) {
 					delta *= (length * (ARBrowser::RadarDiameter / 2.0));
@@ -170,7 +170,7 @@ static Vec2 positionInView (UIView * view, UITouch * touch)
 	{
 		Vec3 up(0, 0, +1);
 		Vec3 g(-gravity.x, -gravity.y, -gravity.z);
-		g.normalize();
+		g = g.normalize();
 		
 		float sz = acos(up.dot(g));
 		
@@ -178,7 +178,7 @@ static Vec2 positionInView (UIView * view, UITouch * touch)
 		if (sz > 0.1) {
 			// Simplified version of the line/plane intersection test, since the plane and line are from the origin.
 			Vec3 at = g + (up * -(up.dot(g)));
-			at.normalize();
+			at = at.normalize();
 			
 			Vec3 north(0, 1, 0);
 			
@@ -264,7 +264,7 @@ static Vec2 positionInView (UIView * view, UITouch * touch)
 		// y -> longitude (vertical, green marker points north)
 		// z -> altitude (altitude, blue marker points up)
 		Vec3 _f(gravity.x, gravity.y, gravity.z);
-		_f.normalize();
+		_f = _f.normalize();
 		
 		Vec3 f = _f;
 		Vec3 down(0, 0, -1);
@@ -346,8 +346,6 @@ static Vec2 positionInView (UIView * view, UITouch * touch)
 	for (ARWorldPoint * point in worldPoints) {
 		Vec3 delta = [origin calculateRelativePositionOf:point];
 		
-		delta[Z] = -2;
-		
 		//NSLog(@"Delta: %0.3f, %0.3f, %0.3f", delta.x, delta.y, delta.z);
 		
 		// Distance as a bird flies (e.g. ignoring altitude)
@@ -376,14 +374,6 @@ static Vec2 positionInView (UIView * view, UITouch * touch)
 		glRotatef(p.point.rotation, 0.0, 0.0, 1.0);
 		glMultMatrixf(p.point.transform.data());
 		[p.point.model draw];
-		
-		// Render the bounding sphere for debugging.
-		//ARBrowser::VerticesT points;
-		//ARBoundingSphere sphere = [[point model] boundingSphere];
-		//ARBrowser::generateGlobe(points, sphere.radius);
-		
-		//glTranslatef(sphere.center.x, sphere.center.y, sphere.center.z);
-		//ARBrowser::renderVertices(points);
 		
 		glPopMatrix();
 	}
