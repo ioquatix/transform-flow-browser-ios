@@ -29,7 +29,7 @@
 	CLLocationCoordinate2D location;
 	
 	// Coffee cup model
-	NSString * coffeePath = [[[NSBundle mainBundle] resourcePath] stringByAppendingPathComponent:@"Models/coffee"];
+	NSString * coffeePath = [[[NSBundle mainBundle] resourcePath] stringByAppendingPathComponent:@"models/coffee"];
 	id<ARRenderable> coffeeCupModel = [ARModel objectModelWithName:@"model" inDirectory:coffeePath];
 	id<ARRenderable> billboardModel = [ARModel viewModelWithView:_informationView];
 	
@@ -49,11 +49,13 @@
     
 	// HitLab NZ
 	ARWorldPoint * hitlab = [ARWorldPoint new];
-	location.latitude = -43.522190;
-	location.longitude = 172.583020;
+	//location.latitude = -43.522190;
+	//location.longitude = 172.583020;
+	location.latitude = -43.521981;
+	location.longitude = 172.582917;
 	[hitlab setCoordinate:location altitude:0.0];
 	
-	[hitlab setModel:billboardModel];
+	[hitlab setModel:coffeeCupModel];
 	//[hitlab setModel:coffeeCupModel];
 	
 	[hitlab.metadata setObject:@"HITLabNZ" forKey:@"name"];
