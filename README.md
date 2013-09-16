@@ -11,6 +11,7 @@ The iOS browser requires the transform flow library and the various motion model
 Once you've got teapot, you can build the dependencies:
 
 	$ teapot fetch
+	$ export IOS_SDK_VERSION=7.0 
 	$ teapot build Dependencies/TranformFlowBrowserIOS platform-darwin-ios variant-debug
 
 Once you've done this, the Xcode project file should compile and run.
