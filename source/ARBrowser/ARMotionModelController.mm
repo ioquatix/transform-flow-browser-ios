@@ -103,9 +103,17 @@
 	
 	[self.locationManager startUpdatingLocation];
 	[self.locationManager startUpdatingHeading];
+
+	// Fire through an initial event to prime the location:
+	if (self.locationManager.location) {
+		[self locationManager:nil didUpdateLocations:@[self.locationManager.location]];
+	}
 }
 
-- (void)locationManager:(CLLocationManager *)manager didUpdateToLocation:(CLLocation *)newLocation fromLocation:(CLLocation *)oldLocation {
+- (void)locationManager:(CLLocationManager *)manager didUpdateLocations:(NSArray *)locations
+{
+	CLLocation * newLocation = locations.lastObject;
+
 	CLLocationCoordinate2D coordinate = newLocation.coordinate;
 
 	NSTimeInterval timestamp = newLocation.timestamp.timeIntervalSince1970 - _timestampOffset;
