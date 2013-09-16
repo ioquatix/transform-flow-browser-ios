@@ -348,9 +348,7 @@ namespace ARBrowser {
 					std::stringstream vertex_stream;
 					vertex_stream.str(vertex);
 					
-					vertex_stream >> face_index.pos_index[i] >> interrupt
-					>> face_index.tex_index[i] >> interrupt
-					>> face_index.nor_index[i];
+					vertex_stream >> face_index.pos_index[i] >> interrupt >> face_index.tex_index[i] >> interrupt >> face_index.nor_index[i];
 				}
 				faces.push_back(face_index);
 			} else if (type_str == TOKEN_USE_MATERIAL) {
@@ -381,13 +379,13 @@ namespace ARBrowser {
 			}
 			
 			for(size_t j = 0; j < 3; ++j) {
-				face.vertices[j].pos        = positions[faces[i].pos_index[j] - 1];
+				face.vertices[j].pos = positions[faces[i].pos_index[j] - 1];
 				
 				if (faces[i].tex_index[j] != -1)
-					face.vertices[j].texcoord   = texcoords[faces[i].tex_index[j] - 1];
+					face.vertices[j].texcoord = texcoords[faces[i].tex_index[j] - 1];
 				
 				if (faces[i].nor_index[j] != -1)
-					face.vertices[j].normal     = normals[faces[i].nor_index[j] - 1];
+					face.vertices[j].normal = normals[faces[i].nor_index[j] - 1];
 			}
 			
 			currentMesh->faces.push_back(face);
