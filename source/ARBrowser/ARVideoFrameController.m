@@ -84,8 +84,10 @@
 		captureSession = [AVCaptureSession new];
 		
 		[captureSession beginConfiguration];
-		
-		if ([captureSession canSetSessionPreset:AVCaptureSessionPresetMedium]) {
+
+		if ([captureSession canSetSessionPreset:AVCaptureSessionPreset1280x720]) {
+			[captureSession setSessionPreset:AVCaptureSessionPreset1280x720];
+		} if ([captureSession canSetSessionPreset:AVCaptureSessionPresetMedium]) {
 			[captureSession setSessionPreset:AVCaptureSessionPresetMedium];
 		} else if ([captureSession canSetSessionPreset:AVCaptureSessionPresetLow]) {
 			[captureSession setSessionPreset:AVCaptureSessionPresetLow];
