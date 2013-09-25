@@ -68,7 +68,7 @@ static Vec2 positionInView (UIView * view, UITouch * touch)
 		
 		// Initialise the location controller
 		self.motionModelController = [ARMotionModelController new];
-		self.motionModelController.motionModel = new TransformFlow::BasicSensorMotionModel;
+		self.motionModelController.motionModel = new TransformFlow::HybridMotionModel;
 		
 		ARBrowser::generateGrid(_grid);
 		
