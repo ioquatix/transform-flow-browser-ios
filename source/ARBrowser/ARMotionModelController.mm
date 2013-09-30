@@ -38,9 +38,9 @@
 
 	_motionModel->update(image_update);
 
-	for (auto & note : image_update.notes) {
-		NSLog(@"Note: %s", note.c_str());
-	}
+	//for (auto & note : image_update.notes) {
+	//	NSLog(@"Note: %s", note.c_str());
+	//}
 }
 
 - (void) calculateTimestampOffset
@@ -96,7 +96,7 @@
 		[self.locationManager setDesiredAccuracy:kCLLocationAccuracyBestForNavigation];
 		[self.locationManager setDelegate:self];
 	
-		[self.locationManager setHeadingOrientation:CLDeviceOrientationPortrait];
+		self.locationManager.headingOrientation = CLDeviceOrientationPortrait;
 	}
 
 	[self calculateTimestampOffset];
@@ -161,16 +161,9 @@
 	return worldLocation;
 }
 
-- (CMAcceleration) currentGravity
+- (Vec3) currentGravity
 {
-	CMAcceleration gravityAcceleration;
-
-	auto internalGravity = _motionModel->gravity();
-	gravityAcceleration.x = internalGravity[0];
-	gravityAcceleration.y = internalGravity[1];
-	gravityAcceleration.z = internalGravity[2];
-
-	return gravityAcceleration;
+	return _motionModel->gravity();
 }
 
 - (void)stopTracking
@@ -178,6 +171,11 @@
 	[self.locationManager stopUpdatingHeading];
 	[self.locationManager stopUpdatingLocation];
 	[self.motionManager stopDeviceMotionUpdates];
+}
+
+- (BOOL) localizationValid
+{
+	return _motionModel && _motionModel->localization_valid();
 }
 
 @end

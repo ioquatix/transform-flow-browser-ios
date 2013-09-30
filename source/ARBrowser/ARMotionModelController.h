@@ -29,9 +29,11 @@
 @property(nonatomic,assign) double cameraFieldOfView;
 
 - (ARWorldLocation *) worldLocation;
-- (CMAcceleration) currentGravity;
+- (Vec3) currentGravity;
 
 - (void) startTracking;
 - (void) stopTracking;
+
+- (BOOL) localizationValid;
 
 @end
