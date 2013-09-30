@@ -61,7 +61,7 @@
 		_motionManager = [[CMMotionManager alloc] init];
 
 		// Device sensor frame rate:
-		NSTimeInterval rate = 1.0 / 60.0;
+		NSTimeInterval rate = 1.0 / 120.0;
 
 		[_motionManager setDeviceMotionUpdateInterval:rate];
 	}
