@@ -69,7 +69,8 @@ static Vec2 positionInView (UIView * view, UITouch * touch)
 		// Initialise the location controller
 		self.motionModelController = [ARMotionModelController new];
 		self.motionModelController.motionModel = new TransformFlow::HybridMotionModel;
-		
+		//self.motionModelController.motionModel = new TransformFlow::BasicSensorMotionModel;
+
 		ARBrowser::generateGrid(_grid);
 		
 		_minimumDistance = 2.0;
@@ -91,7 +92,7 @@ static Vec2 positionInView (UIView * view, UITouch * touch)
 	using namespace Euclid::Numerics;
 
 	ARWorldLocation * origin = [self.motionModelController worldLocation];
-	CMAcceleration gravity = [self.motionModelController currentGravity];
+	Vec3 gravity = [self.motionModelController currentGravity];
 
 	NSArray * worldPoints = nil;
 	if ([self.delegate respondsToSelector:@selector(worldPointsFromLocation:withinDistance:)]) {
@@ -168,9 +169,8 @@ static Vec2 positionInView (UIView * view, UITouch * touch)
 	
 	Vec3 rotationAxis;
 	{
-		Vec3 up(0, 0, +1);
-		Vec3 g(-gravity.x, -gravity.y, -gravity.z);
-		g = g.normalize();
+		Vec3 up(0, 0, 1);
+		Vec3 g = gravity.normalize();
 		
 		float sz = acos(up.dot(g));
 		
@@ -245,51 +245,19 @@ static Vec2 positionInView (UIView * view, UITouch * touch)
 	
 	glEnable(GL_DEPTH_TEST);
 	glClear(GL_DEPTH_BUFFER_BIT);
-	
-	CMAcceleration gravity = [self.motionModelController currentGravity];
-	
-	// Calculate the camera paremeters
-	{
-		glMatrixMode(GL_PROJECTION);
-		glLoadIdentity();
-		
-		glMatrixMode(GL_MODELVIEW);
-		glLoadIdentity();
-		
-		// This moves the camera back slightly and improves the perspective for debugging purposes.
-		//glTranslatef(0.0, 0.0, -2.0);
-		
-		// F defines the negative normal for the plain
-		// x -> latitude (horizontal, red marker points east)
-		// y -> longitude (vertical, green marker points north)
-		// z -> altitude (altitude, blue marker points up)
-		Vec3 _f(gravity.x, gravity.y, gravity.z);
-		_f = _f.normalize();
-		
-		Vec3 f = _f;
-		Vec3 down(0, 0, -1);
-		
-		//NSLog(@"f: %0.4f, %0.4f, %0.4f, Length: %0.4f", _f.x, _f.y, _f.z, _f.length());
-		
-		float sz = acos(down.dot(f));
-		
-		//NSLog(@"Angle: %0.5f", sz);
-		
-		if (sz > 0.01) {
-			Vec3 s = cross_product(down, f);
-			
-			//NSLog(@"d x f: %0.4f, %0.4f, %0.4f, Lenght: %0.4f", s.x, s.y, s.z, s.length());
-			
-			glRotatef(sz * ARBrowser::R2D, s[X], s[Y], s[Z]);
-		}
-		
-		// Move the origin down 1 meter.
-		glTranslatef(0.0, 0.0, -1.0);
-	}
-	
+
+	if (![self.motionModelController localizationValid])
+		return;
+
+	Vec3 gravity = [self.motionModelController currentGravity];
+	ARWorldLocation * origin = [self.motionModelController worldLocation];
+
+	Mat44 transform = TransformFlow::local_camera_transform(gravity, degrees(origin.rotation));
+
 	// Load the camera projection matrix
 	glMatrixMode(GL_PROJECTION);
-	
+	glLoadIdentity();
+
 	CGSize viewSize = [self bounds].size;
 
 	Mat44 perspectiveProjection;
@@ -297,9 +265,9 @@ static Vec2 positionInView (UIView * view, UITouch * touch)
 	glMultMatrixf(perspectiveProjection.data());
 	
 	glMatrixMode(GL_MODELVIEW);
-	ARWorldLocation * origin = [self.motionModelController worldLocation];
-	
-	glRotatef([origin rotation], 0, 0, 1);
+	glLoadMatrixf(transform.data());
+
+	glTranslatef(0.0, 0.0, -0.2);
 	
 	glGetFloatv(GL_PROJECTION_MATRIX, _projectionMatrix.data());
 	glGetFloatv(GL_MODELVIEW_MATRIX, _viewMatrix.data());

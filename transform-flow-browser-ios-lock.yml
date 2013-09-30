@@ -10,7 +10,7 @@ opencv:
   :commit: 3d1c26836ee119e6f7f214b8ec8a0408a41bb7ed
 transform-flow:
   :branch: master
-  :commit: 24cf60108c8b9cd834e7701f173b747b292dd47f
+  :commit: faea7ef2eb97ffb427a60d9eaf42738228b95807
 variants:
   :branch: master
   :commit: 6f3c1de3c0a6254e1fed58fc68fd8a96218f28e7
