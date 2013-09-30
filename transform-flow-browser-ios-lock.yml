@@ -10,16 +10,16 @@ opencv:
   :commit: 3d1c26836ee119e6f7f214b8ec8a0408a41bb7ed
 transform-flow:
   :branch: master
-  :commit: 40745a4a722f0c32201fb8a0f10c5235cd206b24
+  :commit: 24cf60108c8b9cd834e7701f173b747b292dd47f
 variants:
   :branch: master
   :commit: 6f3c1de3c0a6254e1fed58fc68fd8a96218f28e7
 platform-darwin-osx:
   :branch: master
-  :commit: 80877bc9897bf93ae7b6f1608ca96bd32fc1b74e
+  :commit: f4bc18296422582d8b31462664636e505cb251e9
 platform-darwin-ios:
   :branch: master
-  :commit: 835a41bbccf16564effba602d7085afb22ecaf88
+  :commit: 3aac5dcd28f8a13db7891e230b621fa95f060636
 png:
   :branch: master
   :commit: fbb8e7e1e8d68de4d6b533f3941af7739f8939a2
@@ -31,7 +31,7 @@ dream:
   :commit: 0d67847d485101f753e9e69dd380a7493ccaa96d
 dream-imaging:
   :branch: master
-  :commit: 4401546bb057283b1524955f772e3f6da2935bc2
+  :commit: 4564d47e1b3aa5510260db5ad335b592738c973e
 utf8:
   :branch: master
   :commit: 299d10bd57a4deda3e7f8ea0744d1be258b51d2b
