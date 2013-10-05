@@ -14,6 +14,9 @@
 #include <TransformFlow/HybridMotionModel.h>
 #include <Euclid/Numerics/Matrix.Inverse.h>
 
+#include <Euclid/Geometry/Eye.h>
+#include <Euclid/Geometry/Line.h>
+
 #import "ARRendering.h"
 #import "ARWorldPoint.h"
 #import "ARModel.h"
@@ -310,7 +313,7 @@ static Vec2 positionInView (UIView * view, UITouch * touch)
 	}
 	
 	std::vector<ARBrowserVisibleWorldPoint> visibleWorldPoints;
-	
+
 	for (ARWorldPoint * point in worldPoints) {
 		Vec3 delta = [origin calculateRelativePositionOf:point];
 		
@@ -332,9 +335,43 @@ static Vec2 positionInView (UIView * view, UITouch * touch)
 	
 	// Depth sort the visible objects.
 	std::sort(visibleWorldPoints.begin(), visibleWorldPoints.end());
-	
+
+	Euclid::Geometry::Line3 forward;
+
+	{
+		using namespace Euclid::Geometry;
+
+		auto eye_transform = eye_transformation(_projectionMatrix, _viewMatrix);
+		auto eye = eye_transform.convert_from_normalized_space_to_object_space(Vec3(0, 0, -1));
+
+		forward = eye.forward;
+	}
+
 	for (std::size_t i = 0; i < visibleWorldPoints.size(); i += 1) {
-		const ARBrowserVisibleWorldPoint & p = visibleWorldPoints[i];
+		ARBrowserVisibleWorldPoint & p = visibleWorldPoints[i];
+
+		auto t = forward.time_for_closest_point(p.delta);
+		auto closest = forward.point_at_time(t);
+		auto distance = (closest - p.delta).length();
+
+		if (distance < 0.05 && t > 0) {
+			// Randomly move the point somewhere else:
+			CLLocationCoordinate2D c = origin.coordinate;
+
+			AudioServicesPlaySystemSound(kSystemSoundID_Vibrate);
+
+			NSLog(@"Coordinate: %0.8f, %0.8f", c.latitude, c.longitude);
+
+			c.latitude += (((double(rand()) / RAND_MAX) * 2.0) - 1.0) * 0.0001;
+			c.longitude += (((double(rand()) / RAND_MAX) * 2.0) - 1.0) * 0.0001;
+
+			NSLog(@"Updated: %0.8f, %0.8f", c.latitude, c.longitude);
+
+			[p.point setCoordinate:c altitude:p.point.altitude];
+		} else if (distance < 2.0) {
+
+		}
+
 		glPushMatrix();
 		
 		glTranslatef(p.delta[X], p.delta[Y], p.delta[Z]);

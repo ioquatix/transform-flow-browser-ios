@@ -23,7 +23,7 @@
 
 	// Turn off the grid.
 	//[browserView setDisplayGrid:NO];
-	[browserView setDisplayGrid:YES];
+	[browserView setDisplayGrid:NO];
 
 	[browserView setAutoresizingMask:UIViewAutoresizingFlexibleHeight|UIViewAutoresizingFlexibleWidth];
 
@@ -39,7 +39,14 @@
 	[browserView setFarDistance:25.0];
 	
 	[browserView setMaximumDistance:400.0];
-	
+
+	UIImageView * imageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 60, 60)];
+	imageView.image = [UIImage imageNamed:@"crosshairs"];
+	imageView.autoresizingMask = (UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin);
+
+	[browserView addSubview:imageView];
+	imageView.center = browserView.center;
+
 	[self setView:browserView];
 }
 

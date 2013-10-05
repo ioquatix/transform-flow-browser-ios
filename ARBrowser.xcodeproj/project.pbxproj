@@ -29,6 +29,9 @@
 		7E61C97C1354B44B00857A4D /* ARWorldPoint.mm in Sources */ = {isa = PBXBuildFile; fileRef = 7E61C97B1354B44B00857A4D /* ARWorldPoint.mm */; };
 		7E61C97F1354B4E100857A4D /* ARModel.mm in Sources */ = {isa = PBXBuildFile; fileRef = 7E61C97E1354B4E000857A4D /* ARModel.mm */; };
 		7E61C98B1354B69C00857A4D /* models in Resources */ = {isa = PBXBuildFile; fileRef = 7E61C98A1354B69C00857A4D /* models */; };
+		7E75FF2318001BCD005AF7A4 /* target.png in Resources */ = {isa = PBXBuildFile; fileRef = 7E75FF2218001BCD005AF7A4 /* target.png */; };
+		7E75FF241800213B005AF7A4 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7E3CF614153EAD4300027867 /* AudioToolbox.framework */; };
+		7E75FF28180023CF005AF7A4 /* crosshairs.png in Resources */ = {isa = PBXBuildFile; fileRef = 7E75FF27180023CF005AF7A4 /* crosshairs.png */; };
 		7E7C050117E42E300087836F /* teapot.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 7E7C04FF17E42E300087836F /* teapot.xcconfig */; };
 		7E7C050217E42E300087836F /* transform-flow-browser-ios.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 7E7C050017E42E300087836F /* transform-flow-browser-ios.xcconfig */; };
 		7E8D4CB1134FE04A00868D6B /* ARBrowserView.mm in Sources */ = {isa = PBXBuildFile; fileRef = 7E8D4CB0134FE04A00868D6B /* ARBrowserView.mm */; };
@@ -92,6 +95,8 @@
 		7E61C97D1354B4E000857A4D /* ARModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARModel.h; sourceTree = "<group>"; };
 		7E61C97E1354B4E000857A4D /* ARModel.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ARModel.mm; sourceTree = "<group>"; };
 		7E61C98A1354B69C00857A4D /* models */ = {isa = PBXFileReference; lastKnownFileType = folder; path = models; sourceTree = "<group>"; };
+		7E75FF2218001BCD005AF7A4 /* target.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = target.png; sourceTree = "<group>"; };
+		7E75FF27180023CF005AF7A4 /* crosshairs.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = crosshairs.png; sourceTree = "<group>"; };
 		7E7C04FF17E42E300087836F /* teapot.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; name = teapot.xcconfig; path = teapot/teapot.xcconfig; sourceTree = "<group>"; };
 		7E7C050017E42E300087836F /* transform-flow-browser-ios.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; name = "transform-flow-browser-ios.xcconfig"; path = "teapot/transform-flow-browser-ios.xcconfig"; sourceTree = "<group>"; };
 		7E8D4CAF134FE04A00868D6B /* ARBrowserView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARBrowserView.h; sourceTree = "<group>"; };
@@ -135,6 +140,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7E75FF241800213B005AF7A4 /* AudioToolbox.framework in Frameworks */,
 				7EFF636C17DFFCD700440536 /* GLKit.framework in Frameworks */,
 				7EBB6E2F13C550650028A3E7 /* MapKit.framework in Frameworks */,
 				7E61C9791354ACE200857A4D /* CoreLocation.framework in Frameworks */,
@@ -277,6 +283,8 @@
 		7EFF637E17E00EFA00440536 /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				7E75FF27180023CF005AF7A4 /* crosshairs.png */,
+				7E75FF2218001BCD005AF7A4 /* target.png */,
 				7EFF638717E017B900440536 /* BrowserIcon.png */,
 				7EFF638817E017B900440536 /* MapIcon.png */,
 				7EFF638317E0176D00440536 /* BrowserIcon@2x.png */,
@@ -353,6 +361,7 @@
 				7EBB6E4613C5C50D0028A3E7 /* ARMapViewController.xib in Resources */,
 				7EBB6E2A13C5465A0028A3E7 /* ARMainWindow.xib in Resources */,
 				7EFF637017E00C9600440536 /* Default@2x.png in Resources */,
+				7E75FF2318001BCD005AF7A4 /* target.png in Resources */,
 				7EFF637217E00D9A00440536 /* Icon-57x57.png in Resources */,
 				7EFF637417E00D9D00440536 /* Icon-114x114.png in Resources */,
 				7EFF637617E00DF200440536 /* Icon-72x72.png in Resources */,
@@ -360,6 +369,7 @@
 				7EFF637A17E00E6200440536 /* Default-Portrait@2x~ipad.png in Resources */,
 				7EFF637D17E00EA200440536 /* Default-Landscape@2x~ipad.png in Resources */,
 				7EFF638117E016DB00440536 /* BrowserIcon-512x512.png in Resources */,
+				7E75FF28180023CF005AF7A4 /* crosshairs.png in Resources */,
 				7EFF638217E016DB00440536 /* MapIcon-512x512.png in Resources */,
 				7EFF638517E0176D00440536 /* BrowserIcon@2x.png in Resources */,
 				7EFF638617E0176D00440536 /* MapIcon@2x.png in Resources */,
@@ -465,10 +475,6 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				COPY_PHASE_STRIP = NO;
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					"\"$(SRCROOT)\"",
-				);
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "source/ARBrowser/ARBrowser-Prefix.pch";
@@ -490,10 +496,6 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				COPY_PHASE_STRIP = YES;
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					"\"$(SRCROOT)\"",
-				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "source/ARBrowser/ARBrowser-Prefix.pch";
 				GCC_THUMB_SUPPORT = NO;
