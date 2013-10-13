@@ -23,6 +23,7 @@
 	ARViewModel * model = [[ARViewModel alloc] init];
 	
 	[model setOverlay:view];
+	[model updateNow];
 
 	return model;
 }

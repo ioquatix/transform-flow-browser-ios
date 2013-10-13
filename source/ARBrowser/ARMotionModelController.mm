@@ -30,17 +30,16 @@
 
 	Dream::Core::StaticBuffer pixel_buffer(frame->data, (frame->bytesPerRow * frame->size.height));
 	image_update.image_buffer->buffer().assign(pixel_buffer);
-
 	image_update.time_offset = frame->timestamp;
 
 	// This is +/- 2 degrees for most iOS devices.
 	image_update.field_of_view = TransformFlow::degrees(_cameraFieldOfView);
 
-	_motionModel->update(image_update);
+	self.motionModel->update(image_update);
 
-	//for (auto & note : image_update.notes) {
-	//	NSLog(@"Note: %s", note.c_str());
-	//}
+	for (auto & note : image_update.notes) {
+		NSLog(@"Note: %s", note.c_str());
+	}
 }
 
 - (void) calculateTimestampOffset
@@ -61,7 +60,7 @@
 		_motionManager = [[CMMotionManager alloc] init];
 
 		// Device sensor frame rate:
-		NSTimeInterval rate = 1.0 / 120.0;
+		NSTimeInterval rate = 1.0 / 60.0;
 
 		[_motionManager setDeviceMotionUpdateInterval:rate];
 	}
@@ -87,7 +86,7 @@
 
 		motion_update.time_offset = motion.timestamp;
 
-		_motionModel->update(motion_update);
+		self.motionModel->update(motion_update);
 	}];
 
 	if (self.locationManager == nil) {
@@ -128,7 +127,7 @@
 	location_update.horizontal_accuracy = newLocation.horizontalAccuracy;
 	location_update.vertical_accuracy = newLocation.verticalAccuracy;
 
-	_motionModel->update(location_update);
+	self.motionModel->update(location_update);
 }
 
 - (void)locationManager:(CLLocationManager *)manager didUpdateHeading:(CLHeading *)newHeading {
@@ -141,14 +140,14 @@
 	heading_update.true_bearing = newHeading.trueHeading;
 	heading_update.magnetic_bearing = newHeading.magneticHeading;
 
-	_motionModel->update(heading_update);
+	self.motionModel->update(heading_update);
 }
 
 - (ARWorldLocation *) worldLocation
 {
 	ARWorldLocation * worldLocation = [ARWorldLocation new];
 
-	auto position = _motionModel->position();
+	auto position = self.motionModel->position();
 
 	CLLocationCoordinate2D coordinate;
 	coordinate.latitude = position[0];
@@ -156,14 +155,14 @@
 	ARLocationAltitude altitude = position[2];
 
 	[worldLocation setCoordinate:coordinate altitude:altitude];
-	[worldLocation setBearing:_motionModel->bearing() * TransformFlow::R2D];
+	[worldLocation setBearing:self.motionModel->bearing() * TransformFlow::R2D];
 
 	return worldLocation;
 }
 
 - (Vec3) currentGravity
 {
-	return _motionModel->gravity();
+	return self.motionModel->gravity();
 }
 
 - (void)stopTracking
@@ -175,7 +174,7 @@
 
 - (BOOL) localizationValid
 {
-	return _motionModel && _motionModel->localization_valid();
+	return self.motionModel && self.motionModel->localization_valid();
 }
 
 @end

@@ -12,7 +12,7 @@
 #import "ARVideoFrameController.h"
 #import "ARVideoBackground.h"
 
-@class ARBrowserView, ARWorldLocation, ARWorldPoint, ARLocationController;
+@class ARBrowserView, ARWorldLocation, ARWorldPoint, ARMotionModelController;
 
 /// The main data source/delegate for ARBrowserView
 @protocol ARBrowserViewDelegate <ARGLViewDelegate>
@@ -29,6 +29,8 @@
 
 /// Render things like grids, markers, etc:
 - (void) renderInLocalCoordinatesForBrowserView:(ARBrowserView *)view;
+
+- (void) didPointTowards:(ARWorldPoint *)worldPoint withDistanceFromCenter:(float)distance;
 
 @end
 
@@ -59,5 +61,8 @@
 
 /// Display a background horizon grid.
 @property(assign) BOOL displayGrid;
+
+/// The location controller to use for position information.
+@property(nonatomic,retain) ARMotionModelController * motionModelController;
 
 @end

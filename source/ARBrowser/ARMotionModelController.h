@@ -17,7 +17,7 @@
 
 @interface ARMotionModelController : NSObject <ARVideoFrameControllerDelegate, CLLocationManagerDelegate>
 
-@property(nonatomic,assign) Dream::Ref<TransformFlow::MotionModel> motionModel;
+@property(atomic,assign) Dream::Ref<TransformFlow::MotionModel> motionModel;
 
 @property(nonatomic,retain) CLLocationManager * locationManager;
 

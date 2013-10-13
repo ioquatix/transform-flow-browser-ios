@@ -25,7 +25,6 @@ using Euclid::Numerics::Vec3;
 using Euclid::Numerics::Mat44;
 typedef Euclid::Numerics::Vector<3, double> Vec3d;
 
-
 /// Convert latitude/longitude/altitude to Earth-Centered Earth-Fixed coordinates:
 Vec3d convertToECEF(CLLocationCoordinate2D coordinate, ARLocationAltitude altitude);
 

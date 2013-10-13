@@ -9,6 +9,7 @@
 #import <UIKit/UIKit.h>
 
 #import "ARBrowserView.h"
+#import "ARVSLogger.h"
 
 typedef struct {
 	CGFloat distance;
@@ -21,5 +22,9 @@ typedef struct {
 }
 
 @property(nonatomic,retain) NSArray * worldPoints;
+@property(nonatomic,retain) ARVSLogger * logger;
+@property(nonatomic,retain) ARBrowserView * browserView;
+
+- (void)startTrial;
 
 @end

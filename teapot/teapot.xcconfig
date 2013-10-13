@@ -7,9 +7,9 @@
 //
 
 // Select the correct platform based on the SDK:
-TEAPOT_PLATFORM[sdk=macosx*]=darwin-osx-debug
-TEAPOT_PLATFORM[sdk=iphoneos*]=darwin-ios-debug
-TEAPOT_PLATFORM[sdk=iphonesimulator*]=darwin-ios-simulator-debug
+TEAPOT_PLATFORM[sdk=macosx*]=darwin-osx-release
+TEAPOT_PLATFORM[sdk=iphoneos*]=darwin-ios-release
+TEAPOT_PLATFORM[sdk=iphonesimulator*]=darwin-ios-simulator-release
 
 // Compute the prefix path:
 TEAPOT_PLATFORM_PATH=$(TEAPOT_ROOT)/platforms/$(TEAPOT_CONFIGURATION)/$(TEAPOT_PLATFORM)/

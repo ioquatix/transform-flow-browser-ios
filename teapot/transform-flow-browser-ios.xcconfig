@@ -3,8 +3,7 @@
 TEAPOT_ROOT=$(SRCROOT)/teapot
 TEAPOT_CONFIGURATION=transform-flow-browser-ios
 
-OTHER_CFLAGS=-I/Users/samuel/Documents/University/Study/Thesis/Code/transform-flow-browser-ios/teapot/platforms/transform-flow-browser-ios/darwin-ios-debug/include
-OTHER_LDFLAGS=-lEuclid -lDream -lz -lpng -ljpeg -lDreamImaging -lopencv_calib3d -lopencv_core -lopencv_features2d -lopencv_flann -lopencv_imgproc -lopencv_ml -lopencv_photo -lopencv_video -lTransformFlow -L/Users/samuel/Documents/University/Study/Thesis/Code/transform-flow-browser-ios/teapot/platforms/transform-flow-browser-ios/darwin-ios-debug/lib
+OTHER_LDFLAGS=-lEuclid -lDream -lz -lpng -ljpeg -lDreamImaging -lopencv_calib3d -lopencv_core -lopencv_features2d -lopencv_flann -lopencv_imgproc -lopencv_ml -lopencv_photo -lopencv_video -lTransformFlow
 
 // Include the basic Dream-Project configuration:
 #include "teapot.xcconfig"

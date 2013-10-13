@@ -10,8 +10,6 @@
 
 #import "ARMotionModelController.h"
 
-#include <TransformFlow/BasicSensorMotionModel.h>
-#include <TransformFlow/HybridMotionModel.h>
 #include <Euclid/Numerics/Matrix.Inverse.h>
 
 #include <Euclid/Geometry/Eye.h>
@@ -53,9 +51,6 @@ static Vec2 positionInView (UIView * view, UITouch * touch)
 	ARBrowser::VerticesT _grid;
 }
 
-/// The location controller to use for position information.
-@property(nonatomic,retain) ARMotionModelController * motionModelController;
-
 @end
 
 @implementation ARBrowserView
@@ -71,8 +66,6 @@ static Vec2 positionInView (UIView * view, UITouch * touch)
 		
 		// Initialise the location controller
 		self.motionModelController = [ARMotionModelController new];
-		self.motionModelController.motionModel = new TransformFlow::HybridMotionModel;
-		//self.motionModelController.motionModel = new TransformFlow::BasicSensorMotionModel;
 
 		ARBrowser::generateGrid(_grid);
 		
@@ -321,7 +314,6 @@ static Vec2 positionInView (UIView * view, UITouch * touch)
 		
 		// Distance as a bird flies (e.g. ignoring altitude)
 		Vec3 birdFlys = delta;
-		birdFlys[Z] = 0;
 		
 		// Calculate actual (non-scaled) distance.
 		float distance = birdFlys.length();
@@ -354,22 +346,8 @@ static Vec2 positionInView (UIView * view, UITouch * touch)
 		auto closest = forward.point_at_time(t);
 		auto distance = (closest - p.delta).length();
 
-		if (distance < 0.05 && t > 0) {
-			// Randomly move the point somewhere else:
-			CLLocationCoordinate2D c = origin.coordinate;
-
-			AudioServicesPlaySystemSound(kSystemSoundID_Vibrate);
-
-			NSLog(@"Coordinate: %0.8f, %0.8f", c.latitude, c.longitude);
-
-			c.latitude += (((double(rand()) / RAND_MAX) * 2.0) - 1.0) * 0.0001;
-			c.longitude += (((double(rand()) / RAND_MAX) * 2.0) - 1.0) * 0.0001;
-
-			NSLog(@"Updated: %0.8f, %0.8f", c.latitude, c.longitude);
-
-			[p.point setCoordinate:c altitude:p.point.altitude];
-		} else if (distance < 2.0) {
-
+		if (t > 0 && distance < 5.0) {
+			[self.delegate didPointTowards:p.point withDistanceFromCenter:distance];
 		}
 
 		glPushMatrix();

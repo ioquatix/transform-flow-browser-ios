@@ -4,13 +4,13 @@ platforms:
   :commit: 517d7d998edad1e56106c2751cf9dfb686d79ea5
 euclid:
   :branch: master
-  :commit: bfbb6661efe125554c489f28c26c8ddb1475f686
+  :commit: 992ae1252e97df3c9245d28d03b34563304a865d
 opencv:
   :branch: master
   :commit: 3d1c26836ee119e6f7f214b8ec8a0408a41bb7ed
 transform-flow:
   :branch: master
-  :commit: faea7ef2eb97ffb427a60d9eaf42738228b95807
+  :commit: d2b0b2646a9b439f8cf62945c6db0b48a6b14432
 variants:
   :branch: master
   :commit: 6f3c1de3c0a6254e1fed58fc68fd8a96218f28e7

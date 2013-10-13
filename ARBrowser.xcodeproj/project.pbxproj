@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		7E053851180233B40011EC9A /* target-blue.png in Resources */ = {isa = PBXBuildFile; fileRef = 7E05384F180233B40011EC9A /* target-blue.png */; };
+		7E053852180233B40011EC9A /* target-red.png in Resources */ = {isa = PBXBuildFile; fileRef = 7E053850180233B40011EC9A /* target-red.png */; };
+		7E053859180234DD0011EC9A /* ARVSLogger.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E053858180234DD0011EC9A /* ARVSLogger.m */; };
+		7E05385A18023D270011EC9A /* ImageIO.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7EBE522A14D60FC80054B478 /* ImageIO.framework */; };
 		7E2336BA134AD1FF00BEFB33 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7E2336B9134AD1FF00BEFB33 /* UIKit.framework */; };
 		7E2336BC134AD1FF00BEFB33 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7E2336BB134AD1FF00BEFB33 /* Foundation.framework */; };
 		7E2336BE134AD1FF00BEFB33 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7E2336BD134AD1FF00BEFB33 /* CoreGraphics.framework */; };
@@ -29,7 +33,6 @@
 		7E61C97C1354B44B00857A4D /* ARWorldPoint.mm in Sources */ = {isa = PBXBuildFile; fileRef = 7E61C97B1354B44B00857A4D /* ARWorldPoint.mm */; };
 		7E61C97F1354B4E100857A4D /* ARModel.mm in Sources */ = {isa = PBXBuildFile; fileRef = 7E61C97E1354B4E000857A4D /* ARModel.mm */; };
 		7E61C98B1354B69C00857A4D /* models in Resources */ = {isa = PBXBuildFile; fileRef = 7E61C98A1354B69C00857A4D /* models */; };
-		7E75FF2318001BCD005AF7A4 /* target.png in Resources */ = {isa = PBXBuildFile; fileRef = 7E75FF2218001BCD005AF7A4 /* target.png */; };
 		7E75FF241800213B005AF7A4 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7E3CF614153EAD4300027867 /* AudioToolbox.framework */; };
 		7E75FF28180023CF005AF7A4 /* crosshairs.png in Resources */ = {isa = PBXBuildFile; fileRef = 7E75FF27180023CF005AF7A4 /* crosshairs.png */; };
 		7E7C050117E42E300087836F /* teapot.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 7E7C04FF17E42E300087836F /* teapot.xcconfig */; };
@@ -61,6 +64,10 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		7E05384F180233B40011EC9A /* target-blue.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "target-blue.png"; sourceTree = "<group>"; };
+		7E053850180233B40011EC9A /* target-red.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "target-red.png"; sourceTree = "<group>"; };
+		7E053857180234DD0011EC9A /* ARVSLogger.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARVSLogger.h; sourceTree = "<group>"; };
+		7E053858180234DD0011EC9A /* ARVSLogger.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARVSLogger.m; sourceTree = "<group>"; };
 		7E2336B5134AD1FF00BEFB33 /* ARBrowser.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ARBrowser.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		7E2336B9134AD1FF00BEFB33 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		7E2336BB134AD1FF00BEFB33 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -95,7 +102,6 @@
 		7E61C97D1354B4E000857A4D /* ARModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARModel.h; sourceTree = "<group>"; };
 		7E61C97E1354B4E000857A4D /* ARModel.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ARModel.mm; sourceTree = "<group>"; };
 		7E61C98A1354B69C00857A4D /* models */ = {isa = PBXFileReference; lastKnownFileType = folder; path = models; sourceTree = "<group>"; };
-		7E75FF2218001BCD005AF7A4 /* target.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = target.png; sourceTree = "<group>"; };
 		7E75FF27180023CF005AF7A4 /* crosshairs.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = crosshairs.png; sourceTree = "<group>"; };
 		7E7C04FF17E42E300087836F /* teapot.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; name = teapot.xcconfig; path = teapot/teapot.xcconfig; sourceTree = "<group>"; };
 		7E7C050017E42E300087836F /* transform-flow-browser-ios.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; name = "transform-flow-browser-ios.xcconfig"; path = "teapot/transform-flow-browser-ios.xcconfig"; sourceTree = "<group>"; };
@@ -140,6 +146,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7E05385A18023D270011EC9A /* ImageIO.framework in Frameworks */,
+				7E2336BE134AD1FF00BEFB33 /* CoreGraphics.framework in Frameworks */,
 				7E75FF241800213B005AF7A4 /* AudioToolbox.framework in Frameworks */,
 				7EFF636C17DFFCD700440536 /* GLKit.framework in Frameworks */,
 				7EBB6E2F13C550650028A3E7 /* MapKit.framework in Frameworks */,
@@ -151,7 +159,6 @@
 				7E233722134AD6C100BEFB33 /* QuartzCore.framework in Frameworks */,
 				7E2336BA134AD1FF00BEFB33 /* UIKit.framework in Frameworks */,
 				7E2336BC134AD1FF00BEFB33 /* Foundation.framework in Frameworks */,
-				7E2336BE134AD1FF00BEFB33 /* CoreGraphics.framework in Frameworks */,
 				7E23371E134AD67700BEFB33 /* CoreFoundation.framework in Frameworks */,
 				7E233720134AD67C00BEFB33 /* OpenGLES.framework in Frameworks */,
 			);
@@ -208,8 +215,6 @@
 				7EBB6E2813C5465A0028A3E7 /* ARMainWindow.xib */,
 				7E2336C8134AD1FF00BEFB33 /* ARBrowserAppDelegate.h */,
 				7E2336C9134AD1FF00BEFB33 /* ARBrowserAppDelegate.mm */,
-				7E2336CE134AD1FF00BEFB33 /* ARBrowserViewController.h */,
-				7E2336CF134AD1FF00BEFB33 /* ARBrowserViewController.mm */,
 				7E233736134B40C200BEFB33 /* ARWorldLocation.h */,
 				7E233737134B40C200BEFB33 /* ARWorldLocation.mm */,
 				7EBB6E4913C5C50D0028A3E7 /* ARMapViewController.xib */,
@@ -223,6 +228,10 @@
 				7E23372A134AEAC100BEFB33 /* ARVideoBackground.m */,
 				7EFF636817DFFC3D00440536 /* ARGLView.h */,
 				7EFF636917DFFC3D00440536 /* ARGLView.m */,
+				7E053857180234DD0011EC9A /* ARVSLogger.h */,
+				7E053858180234DD0011EC9A /* ARVSLogger.m */,
+				7E2336CE134AD1FF00BEFB33 /* ARBrowserViewController.h */,
+				7E2336CF134AD1FF00BEFB33 /* ARBrowserViewController.mm */,
 				7E8D4CAF134FE04A00868D6B /* ARBrowserView.h */,
 				7E8D4CB0134FE04A00868D6B /* ARBrowserView.mm */,
 				7E8DCF3217E4304800F4C833 /* ARMotionModelController.h */,
@@ -284,7 +293,8 @@
 			isa = PBXGroup;
 			children = (
 				7E75FF27180023CF005AF7A4 /* crosshairs.png */,
-				7E75FF2218001BCD005AF7A4 /* target.png */,
+				7E05384F180233B40011EC9A /* target-blue.png */,
+				7E053850180233B40011EC9A /* target-red.png */,
 				7EFF638717E017B900440536 /* BrowserIcon.png */,
 				7EFF638817E017B900440536 /* MapIcon.png */,
 				7EFF638317E0176D00440536 /* BrowserIcon@2x.png */,
@@ -361,14 +371,15 @@
 				7EBB6E4613C5C50D0028A3E7 /* ARMapViewController.xib in Resources */,
 				7EBB6E2A13C5465A0028A3E7 /* ARMainWindow.xib in Resources */,
 				7EFF637017E00C9600440536 /* Default@2x.png in Resources */,
-				7E75FF2318001BCD005AF7A4 /* target.png in Resources */,
 				7EFF637217E00D9A00440536 /* Icon-57x57.png in Resources */,
 				7EFF637417E00D9D00440536 /* Icon-114x114.png in Resources */,
+				7E053852180233B40011EC9A /* target-red.png in Resources */,
 				7EFF637617E00DF200440536 /* Icon-72x72.png in Resources */,
 				7EFF637817E00E1100440536 /* Icon-144x144.png in Resources */,
 				7EFF637A17E00E6200440536 /* Default-Portrait@2x~ipad.png in Resources */,
 				7EFF637D17E00EA200440536 /* Default-Landscape@2x~ipad.png in Resources */,
 				7EFF638117E016DB00440536 /* BrowserIcon-512x512.png in Resources */,
+				7E053851180233B40011EC9A /* target-blue.png in Resources */,
 				7E75FF28180023CF005AF7A4 /* crosshairs.png in Resources */,
 				7EFF638217E016DB00440536 /* MapIcon-512x512.png in Resources */,
 				7EFF638517E0176D00440536 /* BrowserIcon@2x.png in Resources */,
@@ -403,6 +414,7 @@
 				7EFDDECC13E8DB8C00155C2B /* ARViewModel.mm in Sources */,
 				7EFF636A17DFFC3D00440536 /* ARGLView.m in Sources */,
 				7E8DCF3417E4304800F4C833 /* ARMotionModelController.mm in Sources */,
+				7E053859180234DD0011EC9A /* ARVSLogger.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
